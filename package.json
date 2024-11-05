@@ -21,6 +21,7 @@
     "@supabase/supabase-js": "^2.46.1",
     "ng-hcaptcha": "^2.4.0",
     "rxjs": "~7.5.0",
+    "ts-cacheable": "^1.0.10",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },
