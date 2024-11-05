@@ -6,19 +6,23 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { NgHcaptchaModule } from 'ng-hcaptcha';
 import { environment } from 'src/environments/environment';
+import { IconComponent } from './components/icon/icon.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent
+    NavbarComponent,
+    IconComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgHcaptchaModule.forRoot({
-      siteKey: environment.hcaptcha_sitekey,
-      languageCode: 'en' // optional, will default to browser language
-    }),
+    HttpClientModule,
+    // NgHcaptchaModule.forRoot({
+    //   siteKey: environment.hcaptcha_sitekey,
+    //   languageCode: 'en' // optional, will default to browser language
+    // }),
   ],
   providers: [],
   bootstrap: [AppComponent]
