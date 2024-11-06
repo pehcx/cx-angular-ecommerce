@@ -28,6 +28,7 @@
           "skipTests": true
         },
         "@schematics/angular:pipe": {
+          "path": "src/app/pipes",
           "skipTests": true
         }
       },

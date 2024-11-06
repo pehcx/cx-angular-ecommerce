@@ -2,19 +2,19 @@
     <div class="container mx-auto flex justify-between items-center">
       
       <!-- Brand Logo & Text -->
-      <a href="#" class="text-xl font-semibold">Fruit & Vege Ecommerce</a>
+      <a href="/" class="text-3xl font-semibold branding hover:text-green-400 transition-all duration-500">LokalBonanza</a>
   
       <!-- Desktop Menu -->
       <div class="hidden md:flex space-x-8">
-        <a href="/" class="hover:text-gray-400">Home</a>
-        <a href="/products" class="hover:text-gray-400">Products</a>
-        <a href="/aboutus" class="hover:text-gray-400">About Us</a>
+        <a href="/" class="hover:text-green-400 transition-all duration-500">Home</a>
+        <a href="/products" class="hover:text-green-400 transition-all duration-500">Products</a>
+        <a href="/aboutus" class="hover:text-green-400 transition-all duration-500">About Us</a>
       </div>
       
       <div class="flex">
         <!-- Cart Icon -->
-        <a href="#" class="relative p-3">
-          <app-icon key="cart" class="size-8"></app-icon>
+        <a href="/cart" class="relative p-3">
+          <app-icon key="cart" class="size-8 hover:text-green-400 transition-all duration-500"></app-icon>
           <span class="absolute -top-2 -right-2 bg-gray-400 text-xs rounded-full px-1 m-3">{{ cartItems }}</span>
         </a>
     
@@ -30,9 +30,9 @@
 
     <!-- Mobile Menu Links -->
     <div *ngIf="isOpen" class="md:hidden bg-black text-center space-y-1 py-2">
-      <a href="#" class="block hover:bg-gray-700 py-2">Home</a>
-      <a href="#" class="block hover:bg-gray-700 py-2">Products</a>
-      <a href="#" class="block hover:bg-gray-700 py-2">About Us</a>
+      <a href="#" class="block py-2">Home</a>
+      <a href="#" class="block py-2">Products</a>
+      <a href="#" class="block py-2">About Us</a>
     </div>
   </nav>
   
