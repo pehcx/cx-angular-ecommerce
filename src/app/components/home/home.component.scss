@@ -10,24 +10,24 @@
     .banner-text {
         display: flex;
         align-items: start;
-        width: fit-content;
     }
 
     .main-text, .sub-text {
         text-shadow: 0 0 20px #000;
     }
-
-    
 }
 
 .benefit-section {
-    padding-top: 100px;
-
     img {
         object-fit: cover;
         max-height: 500px;
     }
+
+    .img-delivery {
+        object-position: 100% 30%;
+    }
 }
+
 /*
 .animated {
     display: inline-block;
