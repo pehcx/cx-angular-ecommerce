@@ -19,6 +19,7 @@
     "@angular/platform-browser-dynamic": "^14.1.0",
     "@angular/router": "^14.1.0",
     "@supabase/supabase-js": "^2.46.1",
+    "flowbite": "^2.5.2",
     "ng-hcaptcha": "^2.4.0",
     "rxjs": "~7.5.0",
     "ts-cacheable": "^1.0.10",
