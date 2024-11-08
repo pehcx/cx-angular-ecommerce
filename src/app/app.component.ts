@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { createClient } from '@supabase/supabase-js'
+import { initFlowbite } from 'flowbite';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -8,27 +9,10 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'CX Angular Ecommerce';
-  supabase:any;
+  title = 'LokalBonanza';
+  
 
   ngOnInit() {
-    this.supabase = createClient(environment.supabase_url, environment.supabase_key);
-    // this.fetchData();
+    initFlowbite();
   }
-
-  async fetchData() {
-    const { data, error } = await this.supabase
-        .from('products')
-        .select('*')
-        .order('id');
-
-    if (error) {
-        console.error('Error fetching data:', error)
-        return;
-    }
-
-    console.log('Data:', data)
-  }
-
-  
 }

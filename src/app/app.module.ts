@@ -12,6 +12,8 @@ import { HomeComponent } from './components/home/home.component';
 import { ProductsComponent } from './components/products/products.component';
 import { AboutusComponent } from './components/aboutus/aboutus.component';
 import { SplitPipe } from './pipes/split.pipe';
+import { FooterComponent } from './components/footer/footer.component';
+import { TermsComponent } from './components/terms/terms.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,8 @@ import { SplitPipe } from './pipes/split.pipe';
     ProductsComponent,
     AboutusComponent,
     SplitPipe,
+    FooterComponent,
+    TermsComponent,
   ],
   imports: [
     BrowserModule,

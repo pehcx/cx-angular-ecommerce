@@ -4,6 +4,28 @@
 @import 'tailwindcss/utilities';
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
-body {
+app-root {
+    // Min height ensures the footer sticks to the bottom
     font-family: 'Inter', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+
+    main {
+        flex: 1;
+    }
 }
+
+.branding {
+    font-family: 'Bodoni MT Black', serif;
+}
+
+/*******************************
+Standard with Tailwind Styling
+
+
+text-3xl text-green-900
+text-xl text-gray-400
+
+*/
+

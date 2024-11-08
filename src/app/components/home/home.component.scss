@@ -20,7 +20,11 @@
 .benefit-section {
     img {
         object-fit: cover;
-        max-height: 500px;
+        max-height: 475px;
+
+        @media (max-width: 639px) {
+            max-height: 300px;
+        }
     }
 
     .img-delivery {
