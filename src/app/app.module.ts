@@ -7,7 +7,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { NgHcaptchaModule } from 'ng-hcaptcha';
 import { environment } from 'src/environments/environment';
 import { IconComponent } from './components/icon/icon.component';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HomeComponent } from './components/home/home.component';
 import { ProductsComponent } from './components/products/products.component';
 import { AboutusComponent } from './components/aboutus/aboutus.component';
@@ -20,34 +20,23 @@ import { ProductModalComponent } from './components/modals/product-modal/product
 import { BaseModalComponent } from './components/modals/base-modal/base-modal.component';
 import { MatDialogModule } from '@angular/material';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    NavbarComponent,
-    IconComponent,
-    HomeComponent,
-    ProductsComponent,
-    AboutusComponent,
-    SplitPipe,
-    FooterComponent,
-    TermsComponent,
-    CartComponent,
-    AuthModalComponent,
-    ProductModalComponent,
-    BaseModalComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    MatDialogModule,
-    // NgHcaptchaModule.forRoot({
-    //   siteKey: environment.hcaptcha_sitekey,
-    //   languageCode: 'en' // optional, will default to browser language
-    // }),
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        NavbarComponent,
+        IconComponent,
+        HomeComponent,
+        ProductsComponent,
+        AboutusComponent,
+        SplitPipe,
+        FooterComponent,
+        TermsComponent,
+        CartComponent,
+        AuthModalComponent,
+        ProductModalComponent,
+        BaseModalComponent,
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatDialogModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }
