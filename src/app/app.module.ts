@@ -18,7 +18,7 @@ import { CartComponent } from './components/cart/cart.component';
 import { AuthModalComponent } from './components/modals/auth-modal/auth-modal.component';
 import { ProductModalComponent } from './components/modals/product-modal/product-modal.component';
 import { BaseModalComponent } from './components/modals/base-modal/base-modal.component';
-import { MatDialogModule } from '@angular/material';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
     declarations: [
