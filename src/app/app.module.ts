@@ -14,6 +14,11 @@ import { AboutusComponent } from './components/aboutus/aboutus.component';
 import { SplitPipe } from './pipes/split.pipe';
 import { FooterComponent } from './components/footer/footer.component';
 import { TermsComponent } from './components/terms/terms.component';
+import { CartComponent } from './components/cart/cart.component';
+import { AuthModalComponent } from './components/modals/auth-modal/auth-modal.component';
+import { ProductModalComponent } from './components/modals/product-modal/product-modal.component';
+import { BaseModalComponent } from './components/modals/base-modal/base-modal.component';
+import { MatDialogModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -26,12 +31,17 @@ import { TermsComponent } from './components/terms/terms.component';
     SplitPipe,
     FooterComponent,
     TermsComponent,
+    CartComponent,
+    AuthModalComponent,
+    ProductModalComponent,
+    BaseModalComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    MatDialogModule,
     // NgHcaptchaModule.forRoot({
     //   siteKey: environment.hcaptcha_sitekey,
     //   languageCode: 'en' // optional, will default to browser language

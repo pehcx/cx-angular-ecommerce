@@ -1,0 +1,14 @@
+<!-- THIS IS THE BASE MODAL. EVERY MODAL SHOULD BE BASED ON THIS -->
+
+<div class="modal-header">
+    <h2>{{ title }}</h2>
+    <button mat-button (click)="closeDialog()">Close</button>
+</div>
+<div class="modal-body">
+    <ng-container *ngIf="content; else defaultContent">
+        <ng-container *ngTemplateOutlet="content"></ng-container>
+    </ng-container>
+    <ng-template #defaultContent>
+        <p>Default content goes here...</p>
+    </ng-template>
+</div>
