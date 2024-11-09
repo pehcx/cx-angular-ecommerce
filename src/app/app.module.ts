@@ -20,7 +20,8 @@ import { ProductModalComponent } from './components/modals/product-modal/product
 import { BaseModalComponent } from './components/modals/base-modal/base-modal.component';
 import { MatDialogModule } from '@angular/material';
 
-@NgModule({ declarations: [
+@NgModule({
+    declarations: [
         AppComponent,
         NavbarComponent,
         IconComponent,
@@ -35,8 +36,11 @@ import { MatDialogModule } from '@angular/material';
         ProductModalComponent,
         BaseModalComponent,
     ],
-    bootstrap: [AppComponent], imports: [BrowserModule,
+    bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
         AppRoutingModule,
         BrowserAnimationsModule,
-        MatDialogModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
+        MatDialogModule,
+    ], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }
