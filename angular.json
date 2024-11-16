@@ -8,11 +8,11 @@
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss",
-          "path": "src/app/components",
+          "path": "src/app/features",
           "skipTests": true
         },
         "@schematics/angular:service": {
-          "path": "src/app/services",
+          "path": "src/app/core/services",
           "skipTests": true
         },
         "@schematics/angular:class": {
@@ -22,13 +22,14 @@
           "skipTests": true
         },
         "@schematics/angular:guard": {
+          "path": "src/app/core/guards",
           "skipTests": true
         },
         "@schematics/angular:module": {
           "skipTests": true
         },
         "@schematics/angular:pipe": {
-          "path": "src/app/pipes",
+          "path": "src/app/shared/pipes",
           "skipTests": true
         }
       },

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { createClient } from '@supabase/supabase-js'
 import { initFlowbite } from 'flowbite';
 import { environment } from 'src/environments/environment';
 
@@ -9,9 +8,8 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'LokalBonanza';
+  title = environment.title;
   
-
   ngOnInit() {
     initFlowbite();
   }

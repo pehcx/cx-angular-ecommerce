@@ -1,5 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-navbar',
@@ -42,10 +44,20 @@ import { Component, OnInit } from '@angular/core';
 export class NavbarComponent implements OnInit {
   cartItems = 0;
   isOpen = false;
+  isAuthenticated: any;
 
-  constructor() { }
+  constructor(
+    private dialog: MatDialog
+  ) { }
 
   ngOnInit(): void {
     
+  }
+
+  openDialog(dialog: string) {
+    switch (dialog) {
+      case 'login':
+
+    }
   }
 }

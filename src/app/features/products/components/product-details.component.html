@@ -1,0 +1,10 @@
+<ng-container *ngIf="true; else productNotFound">
+    <div class="product-details">
+
+    </div>
+</ng-container>
+<ng-template #productNotFound>
+    <div class="not-found">
+        No product found...
+    </div>
+</ng-template>

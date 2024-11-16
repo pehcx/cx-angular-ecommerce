@@ -1,4 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
+// Angular Material
+@use '@angular/material' as mat;
+@include mat.core();
+
+$ecommerce-theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$azure-palette,
+    tertiary: mat.$blue-palette,
+  ),
+  density: (
+    scale: 0,
+  )
+));
+
+:root {
+  @include mat.all-component-themes($ecommerce-theme);
+}
+
+// Own CSS Styling
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
@@ -29,4 +48,3 @@ text-3xl text-green-900
 text-xl text-gray-400
 
 */
-

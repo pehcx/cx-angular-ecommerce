@@ -6,6 +6,7 @@ import { map, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+
 export class IconService {
   private iconsUrl = 'assets/icons.json';
 
