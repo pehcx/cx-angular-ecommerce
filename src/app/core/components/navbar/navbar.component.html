@@ -1,26 +1,32 @@
 <nav class="bg-black text-white px-4 py-3 w-full fixed z-20">
-    <div class="topbar container mx-auto flex justify-between items-center">
+    <div class="topbar container mx-auto flex justify-between items-center lg:px-10">
       	<!-- Brand Logo & Text -->
-      	<a href="/" class="text-2xl md:text-3xl branding hover:text-green-400 transition-all duration-500">LokalBonanza</a>
+      	<a href="/" class="text-2xl lg:text-3xl branding hover:text-green-400 transition-all duration-500">LokalBonanza</a>
   
       	<!-- Desktop Menu -->
-      	<div class="hidden md:flex space-x-8">
+      	<div class="hidden lg:flex space-x-8">
         	<a href="/" class="hover:text-green-400 transition-all duration-500">Home</a>
         	<a href="/products" class="hover:text-green-400 transition-all duration-500">Products</a>
         	<a href="/aboutus" class="hover:text-green-400 transition-all duration-500">About Us</a>
       	</div>
       
       	<div class="flex">
-			<button class="border-r">Login</button>
+			<ng-container *ngIf="isLoggedIn(); else unauthenticated">
+				<span>Hi, {{ user.name }}</span>
+				<button class="border-r" (click)="onButtonClick('logout')">Logout</button>
 			
-        	<a href="/cart" class="relative p-3">
-          		<app-icon key="cart" class="size-8 hover:text-green-400 transition-all duration-500"></app-icon>
-          		<span class="absolute -top-2 -right-2 bg-gray-400 text-xs rounded-full px-1 m-3">{{ cartItems }}</span>
-        	</a>
+				<a href="/cart" class="relative p-3">
+					<app-icon key="cart" class="size-8 hover:text-green-400 transition-all duration-500"></app-icon>
+					<span class="absolute -top-2 -right-2 bg-gray-400 text-xs rounded-full px-1 m-3">{{ cartItems }}</span>
+				</a>
+			</ng-container>
+			<ng-template #unauthenticated>
+				<button (click)="onButtonClick('login')">Login</button>
+			</ng-template>
 
 			<!-- Mobile Menu Button -->
 			<button
-				class="flex md:hidden items-center p-3 text-white"
+				class="flex lg:hidden items-center p-3 text-white"
 				(click)="isOpen = !isOpen"
 			>
 				<app-icon key="menu" class="size-8 absolute" [@menuButton]="isOpen ? 'isOpen': 'isClosed'"></app-icon>
@@ -31,7 +37,7 @@
 </nav>
 
 <!-- Mobile Drawer Menu -->
-<div class="mobile-menu text-white fixed z-10 top-20 left-0 md:hidden bg-black text-center space-y-1 py-2 w-full" [@drawer]="isOpen ? 'isOpen': 'isClosed'">
+<div class="mobile-menu text-white fixed z-10 top-20 left-0 lg:hidden bg-black text-center space-y-1 py-2 w-full" [@drawer]="isOpen ? 'isOpen': 'isClosed'">
 	  <a href="/" class="block">Home</a>
 	  <a href="/products" class="block">Products</a>
 	  <a href="/aboutus" class="block">About Us</a>

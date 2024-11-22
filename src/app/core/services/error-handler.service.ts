@@ -13,6 +13,7 @@ export class ErrorHandlerService {
   ) {}
 
   sendError(error?: any): void {
+    // Reminder: Display user-friendly error messages to clients, avoiding technical jargon or developer-specific details.
     const errorMessage = 
       typeof error === 'string' ? error : 
       (error && typeof error === 'object' && error.message ? error.message : 'An unexpected error occurred!');
@@ -20,7 +21,5 @@ export class ErrorHandlerService {
     this.dialog.open(ErrorDialogComponent, {
       data: { message: errorMessage }
     });
-    
-    console.error('Error:', error);
   }
 }

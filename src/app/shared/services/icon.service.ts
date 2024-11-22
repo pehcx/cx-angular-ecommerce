@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Cacheable } from 'ts-cacheable';
+import { Cacheable, LocalStorageStrategy } from 'ts-cacheable';
 import { map, Observable } from 'rxjs';
 
 @Injectable({
@@ -10,9 +10,15 @@ import { map, Observable } from 'rxjs';
 export class IconService {
   private iconsUrl = 'assets/icons.json';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+  ) {}
 
-  @Cacheable()
+  // This caches the icon across sessions, reducing data transmit
+  @Cacheable({
+    cacheKey: "icons",
+    storageStrategy: LocalStorageStrategy,
+  })
   getIcons(): Observable<{ [key: string]: string }> {
     return this.http.get<{ [key: string]: string }>(this.iconsUrl);
   }

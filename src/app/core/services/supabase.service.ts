@@ -3,6 +3,7 @@ import { createClient, Session, SupabaseClient } from '@supabase/supabase-js';
 import { environment } from 'src/environments/environment';
 import { AuthState } from '../enums/auth-state';
 import { ErrorHandlerService } from './error-handler.service';
+import { QueryParams } from '../interfaces/query-params.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,8 @@ import { ErrorHandlerService } from './error-handler.service';
 
 export class SupabaseService {
   private supabase: SupabaseClient;
-  private cachedSession: Session | null;
-  private user: any;
+  private cachedSession: Session | null = null;
+  private user: any = null;
   authStateChanged: EventEmitter<AuthState> = new EventEmitter<AuthState>();
 
   constructor(
@@ -19,7 +20,7 @@ export class SupabaseService {
   ) {
     this.supabase = createClient(environment.supabase_url, environment.supabase_key, {
       auth: {
-        // Default config
+        // This is the default config
         persistSession: true,
         storage: localStorage
       }
@@ -28,41 +29,12 @@ export class SupabaseService {
     this.setupAuthStateChangeHandler();
   }
 
-  async fetchData() {
-    try {
-      const { data, error } = await this.supabase
-      .from('products')
-      .select('*')
-      .order('id');
-
-      if (error) {
-        throw error;
-      }
-    } catch (error) {
-
-    }
+  public getSession(): Session | null {
+    return this.cachedSession;
   }
 
-  getSession(): Session | null {
-    return this.cachedSession || null;
-  }
-
-  getUser() {
+  public getUser() {
     return this.user;
-  }
-
-  async fetchUserData() {
-    try {
-      const { data, error } = await this.supabase.auth.getUser();
-
-      if (error) {
-        throw error;
-      }
-
-      this.user = data;
-    } catch (error) {
-      this.errorHandlerService.sendError(error);
-    }
   }
 
   private setupAuthStateChangeHandler() {
@@ -70,8 +42,12 @@ export class SupabaseService {
       switch (event) {
         case 'SIGNED_IN':
           this.cachedSession = session;
-          this.user = session ? session.user: null;
+          this.user = session?.user ?? null;
           this.authStateChanged.emit(AuthState.SIGNED_IN);
+
+          // check the diff
+          console.log(this.supabase.auth.getUser());
+          console.log(this.user)
           break;
 
         case 'SIGNED_OUT':
@@ -86,7 +62,6 @@ export class SupabaseService {
 
         case 'USER_UPDATED':
           this.fetchUserData();
-          this.authStateChanged.emit(AuthState.USER_UPDATED);
           break;
 
         default:
@@ -97,5 +72,51 @@ export class SupabaseService {
           break;
       }
     });
+  }
+
+  public async fetchData(table: string, queryParams: QueryParams = {}): Promise<any[]> {
+    const queries = this.buildQueries(queryParams);
+    const { data, error } = await this.supabase
+      .from(table)
+      .select(queries.cols)
+      .order(queries.orderBy, { ascending: queries.sortByAsc })
+      .limit(queries.limitBy);
+
+    if (error) console.error(error);
+    return data ?? [];
+  }
+
+  /**
+   * Fetches the current user's data from Supabase and updates the internal user state.
+   * Emits the `USER_UPDATED` event to notify subscribers once the user data has been successfully fetched.
+   *
+   * This method should only be called by `setupAuthStateChangeHandler` function
+   * to ensure it is invoked during relevant auth state transitions.
+   *
+   * @returns {Promise<void>}
+   */
+  private async fetchUserData() {
+    const { data, error } = await this.supabase.auth.getUser();
+    if (data) {
+      this.user = data;
+      this.authStateChanged.emit(AuthState.USER_UPDATED);
+    }
+    
+    if (error) console.error("Failed to retrieve user data");
+  }
+
+  private buildQueries(queryParams: QueryParams = {}) {
+    const defaults = {
+      cols: '*',
+      orderBy: 'id',
+      limitBy: 10,
+      sortByAsc: false,
+    };
+
+    return {
+      // Merge passed queries with default values
+      ...defaults,
+      ...queryParams
+    };
   }
 }

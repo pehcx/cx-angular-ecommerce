@@ -1,7 +1,9 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-
+import { SupabaseService } from '../../services/supabase.service';
+import { Subscription } from 'rxjs';
+import { AuthState } from '../../enums/auth-state';
 
 @Component({
   selector: 'app-navbar',
@@ -42,22 +44,37 @@ import { MatDialog } from '@angular/material/dialog';
 })
 
 export class NavbarComponent implements OnInit {
+  private authSubscription: Subscription;
   cartItems = 0;
   isOpen = false;
-  isAuthenticated: any;
+  session: any = null;
+  user: any;
 
   constructor(
-    private dialog: MatDialog
-  ) { }
-
-  ngOnInit(): void {
-    
+    private dialog: MatDialog,
+    private supabase: SupabaseService,
+  ) {
+    this.session = this.supabase.getSession();
+    this.user = this.supabase.getUser();
   }
 
-  openDialog(dialog: string) {
-    switch (dialog) {
-      case 'login':
+  ngOnInit(): void {
+    this.authSubscription = this.supabase.authStateChanged.subscribe((authState: AuthState) => {
+      if (authState === AuthState.SIGNED_OUT) {
+        
+      }
+    })
+  }
+
+  onButtonClick(button: string) {
+    if (button === 'login') {
+      
+    } else if (button === 'logout') {
 
     }
+  }
+
+  isLoggedIn() {
+    return !!this.supabase.getSession();
   }
 }
