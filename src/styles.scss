@@ -40,6 +40,15 @@ app-root {
     font-family: 'Bodoni MT Black', serif;
 }
 
+button:disabled {
+  background-color: #71717a !important;
+  cursor: not-allowed !important;
+
+  &:hover {
+    color: white !important;
+  }
+}
+
 /*******************************
 Standard with Tailwind Styling
 
