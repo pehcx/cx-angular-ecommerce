@@ -1,7 +1,13 @@
-<h1 mat-dialog-title>Error</h1>
-<div mat-dialog-content>
-    <p>{{ data.message }}</p>
-</div>
-<div mat-dialog-actions>
-    <button mat-button mat-dialog-close>Close</button>
+<div class="error-dialog p-5 lg:p-10">
+    <h1 class="mb-2 text-lg font-bold">Error</h1>
+    <div>
+        <p>{{ data.message }}</p>
+    </div>
+    <div class="mt-5">
+        <button (click)="closeDialog()"
+            class="text-white bg-black hover:text-green-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold text-base w-full px-5 py-2.5 text-center cursor-pointer" 
+        >
+            Close
+        </button>
+    </div>
 </div>

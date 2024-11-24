@@ -7,7 +7,6 @@ import { HomeModule } from './home/home.module';
   imports: [
     CommonModule,
     FeaturesRoutingModule,
-    HomeModule,
   ]
 })
 

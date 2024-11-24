@@ -1,0 +1,70 @@
+<div class="login-dialog p-5 lg:pl-10 lg:pr-10 lg:pb-10 lg:pt-7">
+    <div class="flex justify-end mb-5">
+      <app-icon key="close" class="size-8 cursor-pointer" (click)="closeDialog()" />
+    </div>
+    
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="max-w-sm mx-auto" *ngIf="page === 'login'">
+        <div class="mb-5">
+            <label for="email" class="block mb-2 text-lg font-bold">Email</label>
+            <input id="email" type="email" formControlName="email" placeholder="youremail@example.com"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 min-w-72 lg:min-w-96" />
+            <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="text-red-500 text-sm mt-1">
+                Please enter a valid email.
+            </div>
+        </div>
+        <div class="mb-5">
+            <label for="password" class="block mb-2 text-lg font-bold">Password</label>
+            <input id="password" type="password" formControlName="password" 
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 min-w-72 lg:min-w-96" />
+            <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-red-500 text-sm mt-1">
+                Password is required (min 6 characters).
+            </div>
+        </div>
+        <button type="submit" [disabled]="isLoading || loginForm.invalid"
+            class="text-white bg-black hover:text-green-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold text-base w-full px-5 py-2.5 text-center cursor-pointer" 
+        >
+            Login
+        </button>
+    </form>
+
+    <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()" class="max-w-sm mx-auto" *ngIf="page === 'signup'">
+        <div class="mb-5">
+            <label for="email" class="block mb-2 text-lg font-bold">Email</label>
+            <input id="email" type="email" formControlName="email" placeholder="youremail@example.com"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 min-w-72 lg:min-w-96" />
+            <div *ngIf="signUpForm.get('email')?.invalid && signUpForm.get('email')?.touched" class="text-red-500 text-sm mt-1">
+                Please enter a valid email.
+            </div>
+        </div>
+        <div class="mb-5">
+            <label for="fullName" class="block mb-2 text-lg font-bold">Full Name</label>
+            <input id="fullName" type="text" formControlName="fullName" placeholder="John Doe"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 min-w-72 lg:min-w-96" />
+            <div *ngIf="signUpForm.get('fullName')?.invalid && signUpForm.get('fullName')?.touched" class="text-red-500 text-sm mt-1">
+                Full Name is required (min 3 characters).
+            </div>
+        </div>
+        <div class="mb-5">
+            <label for="password" class="block mb-2 text-lg font-bold">Password</label>
+            <input id="password" type="password" formControlName="password" 
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 min-w-72 lg:min-w-96" />
+            <div *ngIf="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched" class="text-red-500 text-sm mt-1">
+                Password is required (min 6 characters).
+            </div>
+        </div>
+        <button type="submit" [disabled]="isLoading || signUpForm.invalid"
+            class="text-white bg-black hover:text-green-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold text-base w-full px-5 py-2.5 text-center cursor-pointer"
+        >
+            Sign Up
+        </button>
+    </form>
+
+    <div class="mt-3">
+        <ng-container *ngIf="page === 'signup'">
+            Already have an account? <button (click)="switchPage()" class="text-green-700 font-bold">Login</button> here.
+        </ng-container>
+        <ng-container *ngIf="page === 'login'">
+            New to here? <button (click)="switchPage()" class="text-green-700 font-bold">Sign up</button> now!
+        </ng-container>
+    </div>
+</div>

@@ -29,6 +29,67 @@ export class SupabaseService {
     this.setupAuthStateChangeHandler();
   }
 
+  public async signUp(form: {
+    email: string,
+    fullName: string,
+    password: string,
+  }) {
+    try {
+      const { data, error } = await this.supabase.auth.signUp({
+        email: form.email,
+        password: form.password,
+        options: {
+          data: {
+            full_name: form.fullName
+          }
+        }
+      });
+
+      if (error) throw error;
+
+      return {
+        data: data ?? null,
+        error: null
+      };
+    } catch (error) {
+      return {
+        data: null,
+        error: error
+      };
+    }
+  }
+
+  public async signIn(form: {
+    email: string,
+    password: string,
+  }) {
+    try {
+      const { data, error } = await this.supabase.auth.signInWithPassword({
+        email: form.email,
+        password: form.password
+      });
+  
+      if (error) throw error
+
+      return {
+        data: data,
+        error: null
+      };
+    } catch (error) {
+      return {
+        data: null,
+        error: error
+      }
+    }
+  }
+
+  public async signOut() {
+    const { error } = await this.supabase.auth.signOut()
+    if (error) {
+      this.errorHandlerService.sendError(error);
+    }
+  }
+
   public getSession(): Session | null {
     return this.cachedSession;
   }
@@ -44,10 +105,6 @@ export class SupabaseService {
           this.cachedSession = session;
           this.user = session?.user ?? null;
           this.authStateChanged.emit(AuthState.SIGNED_IN);
-
-          // check the diff
-          console.log(this.supabase.auth.getUser());
-          console.log(this.user)
           break;
 
         case 'SIGNED_OUT':
