@@ -70,6 +70,7 @@ export class LoginDialogComponent {
   }
 
   switchPage() {
+    // Switch the form and clear the fields
     this.page = this.page === 'login' ? 'signup': 'login';
     if (this.page === 'login') {
       this.signUpForm.reset();
