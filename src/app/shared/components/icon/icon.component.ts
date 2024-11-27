@@ -21,7 +21,7 @@ export class IconComponent implements OnInit {
 
   ngOnInit(): void {
     this.iconService.getIconByKey(this.key).subscribe(icon => {
-      const svg = icon.replace('<svg', `<svg class="${this.class}"`);
+      const svg = icon ? icon.replace('<svg', `<svg class="${this.class}"`): "";
       this.svgContent = this.sanitizer.bypassSecurityTrustHtml(svg);
     });
   }

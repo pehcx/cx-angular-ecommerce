@@ -9,12 +9,18 @@
         	<button routerLink="/products" class="hover:text-green-400 transition-all duration-500">Products</button>
         	<button routerLink="/aboutus" class="hover:text-green-400 transition-all duration-500">About Us</button>
       	</div>
-      
+    
 		<div class="hidden lg:flex">
 			<ng-container *ngIf="isLoggedIn(); else unauthenticated">
-				<span>Hi, {{ 'user.full_name' }}</span>
-				<!-- Pop up profile modal here -->
-				<button class="border-r" (click)="onButtonClick('logout')">Logout</button>
+				<div class="flex flex-row border-r items-center pr-5 cursor-pointer text-base" [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger">
+					Hi, {{ session.user.user_metadata.full_name }}
+					<app-icon key="down" class="size-4 ml-1 stroke-2" />
+				</div>
+				<mat-menu #menu>
+					<button mat-menu-item routerLink="/profile">My Profile</button>
+					<button mat-menu-item routerLink="/order-history">Order History</button>
+					<button mat-menu-item (click)="onButtonClick('logout')">Logout</button>
+				</mat-menu>
 			
 				<a href="/cart" class="relative p-3">
 					<app-icon key="cart" class="size-8 hover:text-green-400 transition-all duration-500" />
@@ -45,8 +51,16 @@
 	<a href="/products" class="block p-2 w-fit">Products</a>
 	<a href="/aboutus" class="block p-2 w-fit">About Us</a>
 	<ng-container *ngIf="isLoggedIn(); else unauthenticatedMobile">
-		<a (click)="onButtonClick('profile', true)" class="block p-2 w-fit">My Profile</a>
-		<a (click)="onButtonClick('logout', true)" class="block p-2 w-fit cursor-pointer">Logout</a>
+		<div class="cursor-pointer flex flex-row items-center p-2" (click)="toggleAccountMenu()">
+			<span class="mr-2">Account</span>
+			<app-icon key="down" class="size-4 stroke-2" />
+		</div>
+		<div class="account-menu hidden text-zinc-200">
+			<a class="block p-2 w-fit m-auto" routerLink="/profile">My Profile</a>
+			<a class="block p-2 w-fit m-auto" routerLink="/order-history">Order History</a>
+			<a (click)="onButtonClick('logout', true)" class="block p-2 w-fit m-auto cursor-pointer min-w-32 border-t border-zinc-200 text-red-700">Logout</a>
+		</div>
+		
 	</ng-container>
 	<ng-template #unauthenticatedMobile>
 		<a (click)="onButtonClick('login', true)" class="block p-2 w-fit cursor-pointer">Login</a>

@@ -6,6 +6,7 @@ import { LoginDialogComponent } from "./components/dialogs/login-dialog/login-di
 import { ReactiveFormsModule } from "@angular/forms";
 import { PreventParentScrollDirective } from "./directives/prevent-parent-scroll.directive";
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatMenuModule } from "@angular/material/menu";
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/mater
     ErrorDialogComponent,
     LoginDialogComponent,
     PreventParentScrollDirective,
+    MatMenuModule,
   ],
   providers: [
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}}

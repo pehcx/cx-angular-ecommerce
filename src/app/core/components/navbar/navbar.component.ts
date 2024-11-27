@@ -1,11 +1,12 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SupabaseService } from '../../services/supabase.service';
 import { Subscription } from 'rxjs';
 import { AuthState } from '../../enums/auth-state';
 import { LoginDialogComponent } from 'src/app/shared/components/dialogs/login-dialog/login-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ErrorHandlerService } from '../../services/error-handler.service';
 
 @Component({
   selector: 'app-navbar',
@@ -46,39 +47,65 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   ]
 })
 
-export class NavbarComponent implements OnInit {
-  private authSubscription: Subscription;
+export class NavbarComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
   cartItems = 0;
   isOpen = false;
   session: any;
-  user: any;
 
   constructor(
     private dialog: MatDialog,
+    private errorHandler: ErrorHandlerService,
     private supabase: SupabaseService,
     private snackBar: MatSnackBar,
   ) {
-    this.session = this.supabase.getSession();
-    this.user = this.supabase.getUser();
+    
   }
 
   ngOnInit(): void {
-    this.authSubscription = this.supabase.authStateChanged.subscribe((authState: AuthState) => {
+    this.subscriptions.push(this.supabase.authStateChanged.subscribe((authState: AuthState) => {
+      this.session = this.supabase.getSession();
+      
       if (authState === AuthState.SIGNED_OUT) {
         this.showSnackbar("You've been signed out.");
       }
-    })
+    }));
+
+    // this.supabase.retrieveSession().then(({data, error}) => {
+    //   if (error) {
+    //     this.errorHandler.sendError(error);
+    //   }
+
+    //   if (data) {
+    //     this.session = data.session;
+    //   }
+    // });
   }
 
-  onButtonClick(button: string, isMobile = false) {
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  async onButtonClick(button: string, isMobile = false) {
     if (isMobile) this.isOpen = !this.isOpen;
     if (button === 'login') {
       this.dialog.open(LoginDialogComponent);
     } else if (button === 'logout') {
-      this.supabase.signOut();
+      try {
+        await this.supabase.signOut();
+      } catch (error) {
+        if (error) this.errorHandler.sendError(error);
+      }
     } else if (button === 'profile') {
 
     }
+  }
+
+  toggleAccountMenu() {
+    const accountMenu = document.querySelector('.account-menu');
+    const down = document.querySelector('#down');
+
+    if (accountMenu) accountMenu.classList.toggle('hidden');
   }
 
   isLoggedIn() {
