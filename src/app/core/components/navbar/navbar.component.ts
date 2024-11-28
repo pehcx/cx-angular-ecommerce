@@ -67,7 +67,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.session = this.supabase.getSession();
       
       if (authState === AuthState.SIGNED_OUT) {
-        this.showSnackbar("You've been signed out.");
+        this.showSnackbar("👋 Goodbye and have a nice day.");
       }
     }));
 

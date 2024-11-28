@@ -40,6 +40,8 @@ export class LoginDialogComponent {
 
   async onSubmit() {
     this.isLoading = true;
+
+    // Close the Login/Signup modal only when the attempt is successful
     if (this.page === 'login' && this.loginForm.valid) {
       await this.supabase.signIn(this.loginForm.value).then(({ data, error }) => {
         if (error) {
@@ -48,7 +50,7 @@ export class LoginDialogComponent {
 
         if (data) {
           this.closeDialog();
-          this.showSnackbar("Logged in successfully!");
+          this.showSnackbar(`🍇🍉 Welcome back, ${data.user.user_metadata['full_name']}! 🍒🍌`);
         }
       });
     } else if (this.page === 'signup' && this.signUpForm.valid) {
@@ -59,7 +61,7 @@ export class LoginDialogComponent {
 
         if (data) {
           this.closeDialog();
-          this.showSnackbar("Signed up successfully!");
+          this.showSnackbar("🎉 Signed up successfully!");
         }
       });
     } else {
