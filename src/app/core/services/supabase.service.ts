@@ -111,6 +111,9 @@ export class SupabaseService {
     this.supabase.auth.onAuthStateChange(async (event, session) => {
       switch (event) {
         case 'SIGNED_IN':
+          // Triggers:
+          // 1. The user signs in
+          // 2. Page reloads
           this.session = session;
           this.authStateChanged.emit(AuthState.SIGNED_IN);
           break;
@@ -145,6 +148,24 @@ export class SupabaseService {
       .select(queries.cols)
       .order(queries.orderBy, { ascending: queries.sortByAsc })
       .limit(queries.limitBy);
+
+    if (error) throw error;
+    return data ?? [];
+  }
+
+  public async fetchCount(table: string): Promise<number> {
+    const { error, count } = await this.supabase
+      .from(table)
+      .select('*', {count: 'exact'})
+
+    if (error) throw error;
+    return count ?? 0;
+  }
+
+  public async callFunction(func: string, params: any = {}) {
+    const { data, error } = params
+      ? await this.supabase.rpc(func, params)
+      : await this.supabase.rpc(func);
 
     if (error) throw error;
     return data ?? [];

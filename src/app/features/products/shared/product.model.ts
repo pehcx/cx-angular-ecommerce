@@ -1,3 +1,8 @@
+interface Category {
+    id: number;
+    name: string;
+}
+
 export class Product {
     id: number;
     name: string;
@@ -6,5 +11,5 @@ export class Product {
     price: number;
     created_at: string;
     updated_at: string;
-    categories: number[];
+    product_categories: Category[];
 }

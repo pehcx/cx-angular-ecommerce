@@ -2,11 +2,12 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SupabaseService } from '../../services/supabase.service';
-import { Subscription } from 'rxjs';
+import { map, Subject, switchMap, takeUntil } from 'rxjs';
 import { AuthState } from '../../enums/auth-state';
 import { LoginDialogComponent } from 'src/app/shared/components/dialogs/login-dialog/login-dialog.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ErrorHandlerService } from '../../services/error-handler.service';
+import { SnackBarService } from 'src/app/shared/services/snack-bar.service';
+import { CartService } from 'src/app/features/cart/shared/cart.service';
 
 @Component({
   selector: 'app-navbar',
@@ -43,33 +44,57 @@ import { ErrorHandlerService } from '../../services/error-handler.service';
       })),
       transition('isOpen => isClosed', [animate('0.3s')]),
       transition('isClosed => isOpen', [animate('0.3s')]),
+    ]),
+    trigger('accountMenu', [
+      state('isOpen', style({
+        height: '*',
+        overflow: 'hidden'
+      })),
+      state('isClosed', style({
+        height: '0px',
+        overflow: 'hidden'
+      })),
+      transition('isOpen <=> isClosed', [animate('0.3s')]),
     ])
   ]
 })
 
 export class NavbarComponent implements OnInit, OnDestroy {
-  private subscriptions: Subscription[] = [];
+  private destroy$ = new Subject<void>();
   cartItems = 0;
-  isOpen = false;
+  drawerIsOpen = false;
+  accountMenuIsOpen = false;
   session: any;
 
   constructor(
     private dialog: MatDialog,
     private errorHandler: ErrorHandlerService,
     private supabase: SupabaseService,
-    private snackBar: MatSnackBar,
+    private snackBarService: SnackBarService,
+    private cartService: CartService,
   ) {
     
   }
 
   ngOnInit(): void {
-    this.subscriptions.push(this.supabase.authStateChanged.subscribe((authState: AuthState) => {
-      this.session = this.supabase.getSession();
-      
-      if (authState === AuthState.SIGNED_OUT) {
-        this.showSnackbar("👋 Goodbye and have a nice day.");
-      }
-    }));
+    this.supabase.authStateChanged.pipe(
+      takeUntil(this.destroy$),
+      switchMap((authState: AuthState) => {
+        this.session = this.supabase.getSession();
+
+        if (authState === AuthState.SIGNED_IN) {
+            return this.cartService.getCartItemCount().pipe(
+                map(cartItems => cartItems.reduce((acc, item) => acc + item.sum, 0))
+            );
+        } else if (authState === AuthState.SIGNED_OUT) {
+            this.snackBarService.show("👋 Goodbye and have a nice day.");
+            return [];
+        }
+        return [];
+      })
+    ).subscribe(totalSum => {
+      this.cartItems = totalSum || 0;
+    });
 
     // this.supabase.retrieveSession().then(({data, error}) => {
     //   if (error) {
@@ -83,11 +108,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   async onButtonClick(button: string, isMobile = false) {
-    if (isMobile) this.isOpen = !this.isOpen;
+    if (isMobile) this.drawerIsOpen = !this.drawerIsOpen;
     if (button === 'login') {
       this.dialog.open(LoginDialogComponent);
     } else if (button === 'logout') {
@@ -101,21 +127,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  toggleAccountMenu() {
-    const accountMenu = document.querySelector('.account-menu');
-    const down = document.querySelector('#down');
-
-    if (accountMenu) accountMenu.classList.toggle('hidden');
-  }
-
   isLoggedIn() {
     return !!this.supabase.getSession();
-  }
-
-  showSnackbar(message: string) {
-    this.snackBar.open(message, '', {
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom',
-    });
   }
 }

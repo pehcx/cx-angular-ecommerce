@@ -12,6 +12,7 @@ export class ErrorHandlerService {
     private dialog: MatDialog
   ) {}
 
+  // This opens the error dialog
   sendError(error?: any): void {
     const errorMsg = 
       typeof error === 'string' ? error : 

@@ -3,7 +3,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { SupabaseService } from 'src/app/core/services/supabase.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackBarService } from 'src/app/shared/services/snack-bar.service';
 
 @Component({
   selector: 'app-login-dialog',
@@ -24,7 +24,7 @@ export class LoginDialogComponent {
     private fb: FormBuilder,
     private supabase: SupabaseService,
     private errorHandler: ErrorHandlerService,
-    private snackBar: MatSnackBar,
+    private snackBarService: SnackBarService,
   ) {
     this.signUpForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -50,7 +50,7 @@ export class LoginDialogComponent {
 
         if (data) {
           this.closeDialog();
-          this.showSnackbar(`🍇🍉 Welcome back, ${data.user.user_metadata['full_name']}! 🍒🍌`);
+          this.snackBarService.show(`🍇🍉 Welcome back, ${data.user.user_metadata['full_name']}! 🍒🍌`);
         }
       });
     } else if (this.page === 'signup' && this.signUpForm.valid) {
@@ -61,7 +61,7 @@ export class LoginDialogComponent {
 
         if (data) {
           this.closeDialog();
-          this.showSnackbar("🎉 Signed up successfully!");
+          this.snackBarService.show("🎉 Signed up successfully!");
         }
       });
     } else {
@@ -83,12 +83,5 @@ export class LoginDialogComponent {
 
   closeDialog() {
     this.dialogRef.close();
-  }
-
-  showSnackbar(message: string) {
-    this.snackBar.open(message, '', {
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom',
-    });
   }
 }

@@ -1,4 +1,4 @@
-<nav class="bg-black text-white px-4 py-3 w-full fixed top-0 z-20">
+<nav class="bg-black text-white px-4 py-3 w-full fixed top-0 z-20 min-h-20 items-center flex flex-row">
     <div class="topbar container mx-auto flex justify-between items-center lg:px-10">
       	<!-- Brand Logo & Text -->
       	<a href="/" class="text-2xl lg:text-3xl branding hover:text-green-400 transition-all duration-500">LokalBonanza</a>
@@ -12,20 +12,19 @@
     
 		<div class="hidden lg:flex">
 			<ng-container *ngIf="isLoggedIn(); else unauthenticated">
-				<div class="flex flex-row border-r items-center pr-5 cursor-pointer text-base" [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger">
+				<a href="/cart" class="relative p-3 mr-2">
+					<icon key="cart" class="size-8 hover:text-green-400 transition-all duration-500" />
+					<span class="absolute -top-2 -right-2 bg-zinc-600 text-xs rounded-full px-1 m-3">{{ cartItems }}</span>
+				</a>
+				<div class="flex flex-row items-center pr-5 cursor-pointer text-base" [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger">
 					Hi, {{ session.user.user_metadata.full_name }}
-					<app-icon key="down" class="size-4 ml-1 stroke-2" />
+					<icon key="down" class="size-4 ml-1 stroke-2" />
 				</div>
 				<mat-menu #menu>
 					<button mat-menu-item routerLink="/profile">My Profile</button>
 					<button mat-menu-item routerLink="/order-history">Order History</button>
 					<button mat-menu-item (click)="onButtonClick('logout')">Logout</button>
 				</mat-menu>
-			
-				<a href="/cart" class="relative p-3">
-					<app-icon key="cart" class="size-8 hover:text-green-400 transition-all duration-500" />
-					<span class="absolute -top-2 -right-2 bg-gray-400 text-xs rounded-full px-1 m-3">{{ cartItems }}</span>
-				</a>
 			</ng-container>
 			<ng-template #unauthenticated>
 				<button (click)="onButtonClick('login')" class="hover:text-green-400 transition-all duration-500">Login</button>
@@ -33,34 +32,32 @@
 		</div>
 
 		<!-- Mobile Menu Button -->
-		<button
-		  class="flex lg:hidden items-center p-3 text-white"
-		  (click)="isOpen = !isOpen"
-		>
-		  <app-icon key="menu" class="size-8 absolute" [@menuButton]="isOpen ? 'isOpen': 'isClosed'" />
-		  <app-icon key="close" class="size-8" [@closeButton]="isOpen ? 'isOpen': 'isClosed'" />
+		<button class="flex lg:hidden items-center p-3 text-white" (click)="drawerIsOpen = !drawerIsOpen">
+			<icon key="menu" class="size-8 absolute" [@menuButton]="drawerIsOpen ? 'isOpen': 'isClosed'" />
+			<icon key="close" class="size-8" [@closeButton]="drawerIsOpen ? 'isOpen': 'isClosed'" />
 		</button>
     </div>
 </nav>
 
 <!-- Mobile Drawer Menu -->
 <div class="mobile-menu text-white fixed top-20 left-0 lg:hidden bg-black text-center space-y-3 py-2 w-full text-xl z-10 flex flex-col items-center"
-	[@drawer]="isOpen ? 'isOpen': 'isClosed'" preventParentScroll
+	[@drawer]="drawerIsOpen ? 'isOpen': 'isClosed'" preventParentScroll
 >
 	<a href="/" class="block p-2 w-fit">Home</a>
 	<a href="/products" class="block p-2 w-fit">Products</a>
 	<a href="/aboutus" class="block p-2 w-fit">About Us</a>
 	<ng-container *ngIf="isLoggedIn(); else unauthenticatedMobile">
-		<div class="cursor-pointer flex flex-row items-center p-2" (click)="toggleAccountMenu()">
+		<div class="cursor-pointer flex flex-row items-center p-2" (click)="accountMenuIsOpen = !accountMenuIsOpen">
 			<span class="mr-2">Account</span>
-			<app-icon key="down" class="size-4 stroke-2" />
+			<icon key="down" class="size-4 stroke-2" />
 		</div>
-		<div class="account-menu hidden text-zinc-200">
-			<a class="block p-2 w-fit m-auto" routerLink="/profile">My Profile</a>
-			<a class="block p-2 w-fit m-auto" routerLink="/order-history">Order History</a>
-			<a (click)="onButtonClick('logout', true)" class="block p-2 w-fit m-auto cursor-pointer min-w-32 border-t border-zinc-200 text-red-700">Logout</a>
+		<div class="account-menu text-zinc-300 bg-zinc-900 w-full" [@accountMenu]="accountMenuIsOpen ? 'isOpen': 'isClosed'">
+			<div class="my-2 space-y-3">
+				<a class="block p-2 w-fit m-auto" routerLink="/profile">My Profile</a>
+				<a class="block p-2 w-fit m-auto" routerLink="/order-history">Order History</a>
+				<a (click)="onButtonClick('logout', true)" class="block p-2 w-fit m-auto font-bold cursor-pointer min-w-32 border-t border-zinc-300 text-red-700">Logout</a>
+			</div>
 		</div>
-		
 	</ng-container>
 	<ng-template #unauthenticatedMobile>
 		<a (click)="onButtonClick('login', true)" class="block p-2 w-fit cursor-pointer">Login</a>

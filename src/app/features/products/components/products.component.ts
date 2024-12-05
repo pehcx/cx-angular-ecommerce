@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { catchError, combineLatest, finalize, forkJoin, of, Subject, takeUntil } from 'rxjs';
-import { Product } from 'src/app/core/models/product.model';
+import { catchError, finalize, map, of, Subject, takeUntil } from 'rxjs';
+import { Product } from '../shared/product.model';
 import { environment } from 'src/environments/environment';
-import { ProductsService } from '../services/products.service';
-import { ProductCategory } from 'src/app/core/models/product-category.model';
+import { ProductsService } from '../shared/products.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
+import { SupabaseService } from 'src/app/core/services/supabase.service';
 
 @Component({
   selector: 'app-products',
@@ -15,9 +15,11 @@ import { ErrorHandlerService } from 'src/app/core/services/error-handler.service
 export class ProductsComponent implements OnInit, OnDestroy {
   products: Product[] = [];
   isLoading = true;
+  addToCartIsLoading = false;
   private readonly destroy$ = new Subject<void>();
 
   constructor(
+    private supabase: SupabaseService,
     private productsService: ProductsService,
     private errorHandler: ErrorHandlerService,
   ) { }
@@ -32,11 +34,20 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   loadProducts() {
-    forkJoin([
-      this.productsService.getProducts(),
-      this.productsService.getProductCategories()
-    ])
-    .pipe(
+    const params = {
+      cols: `
+        *,
+        product_categories(categories(id, name))
+      `
+    };
+
+    this.productsService.getProducts(params).pipe(
+      map((products: any[]) =>
+        products.map(product => ({
+          ...product,
+          product_categories: product.product_categories.map((pc: { categories: any; }) => pc.categories)
+        }))
+      ),
       finalize(() => {
         this.isLoading = false
       }),
@@ -44,21 +55,41 @@ export class ProductsComponent implements OnInit, OnDestroy {
       catchError((error) => {
         console.error(error);
         this.errorHandler.sendError("Failed to load products. Please try again later");
-        return of([[],[]]);
+        return of([]);
       })
     )
-    .subscribe(([products, categories]) => {
-      this.products = products.map(product => {
-        const productCategories = categories
-          .filter(category => category.product_id === product.id)
-          .map(category => category.category_id);
-        return { ...product, categories: productCategories };
-      });
-      console.log(this.products);
+    .subscribe(products => {
+      this.products = products;
     });
   }
 
   getImagePath(imageUrl: string) {
     return environment.supabase_url + '/storage/v1/object/public/products/' + imageUrl;
+  }
+
+  addToCart(product_id: any) {
+    if (this.isLoggedIn()) {
+      const params = {
+        input_product_id: product_id,
+        input_quantity: 1
+      }
+
+      this.productsService.addToCart(params).pipe(
+        finalize(() => {
+          this.addToCartIsLoading = true
+        }),
+        takeUntil(this.destroy$),
+        catchError((error) => {
+          console.error(error);
+          this.errorHandler.sendError("Failed to Add To Cart. Please try again later");
+          return of([]);
+        })
+      )
+      .subscribe(data => console.log(data));
+    }
+  }
+
+  isLoggedIn() {
+    return !!this.supabase.getSession();
   }
 }

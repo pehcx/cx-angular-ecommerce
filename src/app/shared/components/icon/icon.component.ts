@@ -3,7 +3,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { IconService } from 'src/app/shared/services/icon.service';
 
 @Component({
-  selector: 'app-icon',
+  selector: 'icon',
   templateUrl: './icon.component.html',
   styleUrls: ['./icon.component.scss']
 })
