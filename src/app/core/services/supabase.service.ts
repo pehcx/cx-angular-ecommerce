@@ -22,9 +22,10 @@ export class SupabaseService {
       }
     });
 
-    this.setupAuthStateChangeHandler();
+    this.authStateChangeHandler();
   }
 
+  /* #region Authentication */
   public async signUp(form: {
     email: string,
     fullName: string,
@@ -107,7 +108,7 @@ export class SupabaseService {
   //   }
   // }
 
-  private setupAuthStateChangeHandler() {
+  private authStateChangeHandler() {
     this.supabase.auth.onAuthStateChange(async (event, session) => {
       switch (event) {
         case 'SIGNED_IN':
@@ -140,7 +141,9 @@ export class SupabaseService {
       }
     });
   }
+  /* #endregion */
 
+  /* #region Database & Queries */
   public async fetchData(table: string, queryParams: QueryParams = {}): Promise<any[]> {
     const queries = this.buildQueries(queryParams);
     const { data, error } = await this.supabase
@@ -170,7 +173,9 @@ export class SupabaseService {
     if (error) throw error;
     return data ?? [];
   }
+  /* #endregion */
 
+  /* #region Helpers */
   private buildQueries(queryParams: QueryParams = {}) {
     const defaults = {
       cols: '*',
@@ -185,4 +190,5 @@ export class SupabaseService {
       ...queryParams
     };
   }
+  /* #endregion */
 }
