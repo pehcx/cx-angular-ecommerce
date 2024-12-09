@@ -14,7 +14,7 @@
 			<ng-container *ngIf="isLoggedIn(); else unauthenticated">
 				<a href="/cart" class="relative p-3 mr-2">
 					<icon key="cart" class="size-8 hover:text-green-400 transition-all duration-500" />
-					<span class="absolute -top-2 -right-2 bg-zinc-600 text-xs rounded-full px-1 m-3">{{ cartItems }}</span>
+					<span class="absolute -top-2 -right-2 bg-zinc-600 text-xs rounded-full px-1 m-3">{{ cartItemCount }}</span>
 				</a>
 				<div class="flex flex-row items-center pr-5 cursor-pointer text-base" [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger">
 					Hi, {{ session.user.user_metadata.full_name }}

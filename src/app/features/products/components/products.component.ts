@@ -6,6 +6,9 @@ import { ProductsService } from '../shared/products.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { SupabaseService } from 'src/app/core/services/supabase.service';
 import { SnackBarService } from 'src/app/shared/services/snack-bar.service';
+import { MatDialog } from '@angular/material/dialog';
+import { LoginDialogComponent } from 'src/app/shared/components/dialogs/login-dialog/login-dialog.component';
+import { CartService } from '../../cart/shared/cart.service';
 
 @Component({
   selector: 'app-products',
@@ -26,6 +29,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
     private productsService: ProductsService,
     private errorHandler: ErrorHandlerService,
     private snackBarService: SnackBarService,
+    private dialog: MatDialog,
+    private cartService: CartService,
   ) { }
 
   ngOnInit(): void {
@@ -44,7 +49,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
     const params = {
       cols: `
         *,
-        product_categories(categories(id, name))
+        product_categories(categories(id, name)),
+        stocks(available_quantity)
       `
     };
 
@@ -52,7 +58,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
       map((products: any[]) =>
         products.map(product => ({
           ...product,
-          product_categories: product.product_categories.map((pc: { categories: any; }) => pc.categories)
+          product_categories: product.product_categories.map((pc: { categories: any; }) => pc.categories),
+          stocks: product.stocks?.[0]?.available_quantity ?? 0
         }))
       ),
       finalize(() => {
@@ -68,7 +75,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
     )
     .subscribe((products) => {
       this.products = products;
-      this.addToCartIsLoading = products.reduce((acc: { [key: number]: boolean }, product) => {
+      this.addToCartIsLoading = products.reduce((acc: { [productId: number]: boolean }, product) => {
         acc[product.id] = false;
         return acc;
       }, {});
@@ -95,13 +102,18 @@ export class ProductsComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         next: () => {
-          this.snackBarService.show(`Successfully added ${product.name} into the cart.`)
+          this.snackBarService.show(`Successfully added ${product.name} into the cart.`);
+          this.cartService.updateCartItemCount();
         },
         error: (e) => {
           console.error(e);
           this.errorHandler.sendError(e);
         }
       });
+    } else {
+      this.dialog.open(LoginDialogComponent);
+      this.snackBarService.show("You have to login first.");
+      this.addToCartIsLoading[product.id] = false;
     }
   }
 

@@ -1,8 +1,8 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, effect, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SupabaseService } from '../../services/supabase.service';
-import { map, Subject, switchMap, takeUntil } from 'rxjs';
+import { catchError, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { AuthState } from '../../enums/auth-state';
 import { LoginDialogComponent } from 'src/app/shared/components/dialogs/login-dialog/login-dialog.component';
 import { ErrorHandlerService } from '../../services/error-handler.service';
@@ -61,7 +61,7 @@ import { CartService } from 'src/app/features/cart/shared/cart.service';
 
 export class NavbarComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  cartItems = 0;
+  cartItemCount: any;
   drawerIsOpen = false;
   accountMenuIsOpen = false;
   session: any;
@@ -73,7 +73,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private snackBarService: SnackBarService,
     private cartService: CartService,
   ) {
-    
+    effect(() => {
+      this.cartItemCount = this.cartService.cartItemCount();
+    });
   }
 
   ngOnInit(): void {
@@ -81,20 +83,22 @@ export class NavbarComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$),
       switchMap((authState: AuthState) => {
         this.session = this.supabase.getSession();
-
+  
         if (authState === AuthState.SIGNED_IN) {
-            return this.cartService.getCartItemCount().pipe(
-                map(cartItems => cartItems.reduce((acc, item) => acc + item.sum, 0))
-            );
+          // Get the latest cart item count upon signing in
+          return this.cartService.getCartItemCount().pipe(
+            catchError((error) => {
+              this.errorHandler.sendError(error);
+              return of(null);
+            })
+          );
         } else if (authState === AuthState.SIGNED_OUT) {
             this.snackBarService.show("👋 Goodbye and have a nice day.");
-            return [];
         }
-        return [];
+
+        return of(null);
       })
-    ).subscribe(totalSum => {
-      this.cartItems = totalSum || 0;
-    });
+    ).subscribe();
 
     // this.supabase.retrieveSession().then(({data, error}) => {
     //   if (error) {

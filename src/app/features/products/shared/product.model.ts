@@ -12,4 +12,5 @@ export class Product {
     created_at: string;
     updated_at: string;
     product_categories: Category[];
+    stocks: number;
 }
