@@ -59,8 +59,9 @@ button:disabled {
   ));
 }
 
-input[type=checkbox]:checked {
+.mdc-checkbox__background {
   background-color: #000 !important;
+  border-color: #000 !important;
 }
 
 /*******************************
