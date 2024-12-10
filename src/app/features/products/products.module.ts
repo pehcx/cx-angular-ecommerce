@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ProductsComponent } from './components/products.component';
 import { ProductsRoutingModule } from './products-routing.module';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -12,6 +13,7 @@ import { ProductDetailsComponent } from './components/product-details/product-de
   imports: [
     CommonModule,
     ProductsRoutingModule,
+    MatCheckboxModule
   ]
 })
 

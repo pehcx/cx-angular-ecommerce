@@ -9,6 +9,7 @@ import { SnackBarService } from 'src/app/shared/services/snack-bar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginDialogComponent } from 'src/app/shared/components/dialogs/login-dialog/login-dialog.component';
 import { CartService } from '../../cart/shared/cart.service';
+import { ProductCategory } from '../shared/product-category.model';
 
 @Component({
   selector: 'app-products',
@@ -18,6 +19,10 @@ import { CartService } from '../../cart/shared/cart.service';
 
 export class ProductsComponent implements OnInit, OnDestroy {
   products: Product[] = [];
+  filteredProducts: Product[] = [];
+  productCategories: any = [];
+  selectedCategories: Set<number> = new Set();
+
   isLoading = true;
   failedLoading = false;
   addToCartIsLoading: any;
@@ -55,13 +60,20 @@ export class ProductsComponent implements OnInit, OnDestroy {
     };
 
     this.productsService.getProducts(params).pipe(
-      map((products: any[]) =>
-        products.map(product => ({
-          ...product,
-          product_categories: product.product_categories.map((pc: { categories: any; }) => pc.categories),
-          stocks: product.stocks?.[0]?.available_quantity ?? 0
-        }))
-      ),
+      map((products: any[]) => {
+        const finalProducts = products;
+        // .map(product => ({
+        //   ...product,
+        //   product_categories: product.product_categories.map((pc: { categories: any; }) => pc.categories),
+        //   stocks: product.stocks?.[0]?.available_quantity ?? 0
+        // }));
+        
+        const productCategories: ProductCategory[] = Array.from(
+          new Map(finalProducts.flatMap(product => product.product_categories[0].categories).map((category: any) => [category.id, category])).values()
+        );
+
+        return { finalProducts, productCategories };
+      }),
       finalize(() => {
         this.isLoading = false;
       }),
@@ -70,12 +82,19 @@ export class ProductsComponent implements OnInit, OnDestroy {
         this.failedLoading = true;
         console.error(error);
         this.errorHandler.sendError("Failed to load products. Please try again later");
-        return of([]);
+        return of({ finalProducts: [], productCategories: [] });
       })
     )
-    .subscribe((products) => {
-      this.products = products;
-      this.addToCartIsLoading = products.reduce((acc: { [productId: number]: boolean }, product) => {
+    .subscribe(({finalProducts, productCategories}) => {
+      this.products = finalProducts;
+      this.filteredProducts = finalProducts;
+      this.productCategories = productCategories;
+
+      this.productCategories.forEach((category: any) => {
+        this.selectedCategories.add(category.id);
+      });
+
+      this.addToCartIsLoading = finalProducts.reduce((acc: { [productId: number]: boolean }, product) => {
         acc[product.id] = false;
         return acc;
       }, {});
@@ -114,6 +133,28 @@ export class ProductsComponent implements OnInit, OnDestroy {
       this.dialog.open(LoginDialogComponent);
       this.snackBarService.show("You have to login first.");
       this.addToCartIsLoading[product.id] = false;
+    }
+  }
+
+  onCategorySelectionChange(categoryId: number, isChecked: boolean) {
+    console.log(categoryId)
+    if (isChecked) {
+      this.selectedCategories.add(categoryId);
+    } else {
+      this.selectedCategories.delete(categoryId);
+    }
+    this.filterProducts();
+  }
+
+  filterProducts() {
+    if (this.selectedCategories.size === 0) {
+      this.filteredProducts = this.products;
+    } else {
+      this.filteredProducts = this.products.filter(product =>
+        product.product_categories.some((productCategory) =>
+          this.selectedCategories.has(productCategory.categories.id)
+        )
+      );
     }
   }
 
