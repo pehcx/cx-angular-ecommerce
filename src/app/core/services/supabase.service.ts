@@ -156,16 +156,7 @@ export class SupabaseService {
     return data ?? [];
   }
 
-  public async fetchCount(table: string): Promise<number> {
-    const { error, count } = await this.supabase
-      .from(table)
-      .select('*', {count: 'exact'})
-
-    if (error) throw error;
-    return count ?? 0;
-  }
-
-  public async callFunction(func: string, params: any = {}) {
+  public async callFunction(func: string, params?: object) {
     const { data, error } = params
       ? await this.supabase.rpc(func, params)
       : await this.supabase.rpc(func);
