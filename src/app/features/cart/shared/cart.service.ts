@@ -38,11 +38,15 @@ export class CartService {
       orderBy: 'updated_at'
     };
 
-    return from(this.supabase.fetchData('cart_items', params)).pipe();
+    return from(this.supabase.fetchData('cart_items', params));
   }
   
   public updateCart(params: any) {
     return from(this.supabase.callFunction('update_cart', params));
+  }
+
+  public removeFromCart(params: any) {
+    return from(this.supabase.callFunction('remove_from_cart', params))
   }
 
   // Update the cart item count locally to avoid frequent GET calls

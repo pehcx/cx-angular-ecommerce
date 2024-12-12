@@ -1,0 +1,16 @@
+<div class="confirmation-dialog p-5 lg:p-10 flex flex-col items-center">
+    <div class="flex flex-col justify-center w-full">
+        <h1 class="mb-2 text-lg font-bold text-center">{{ data.title }}</h1>
+        <div class="min-w-48 text-justify">
+            <p>{{ data.message }}</p>
+        </div>
+    </div>
+    <div class="mt-10 flex flex-row justify-around w-full">
+        <button (click)="closeDialog(false)" class="flex text-white bg-black hover:text-green-400 font-bold text-base px-5 py-2.5 text-center cursor-pointer transition-all duration-500">
+            Cancel
+        </button>
+        <button (click)="closeDialog(true)" class="flex text-white bg-red-700 hover:text-green-400 font-bold text-base px-5 py-2.5 text-center cursor-pointer transition-all duration-500">
+            {{ data.buttonText ?? 'OK' }}
+        </button>
+    </div>
+</div>

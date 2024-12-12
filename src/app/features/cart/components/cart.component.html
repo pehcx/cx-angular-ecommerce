@@ -1,7 +1,7 @@
-<div class="cart">
-    <div class="flex flex-col w-full lg:w-1/2 m-auto">
+<div class="cart min-h-[50vh] w-full lg:w-1/2 m-auto">
+    <div class="flex flex-col" *ngIf="cartItems.length > 0; else emptyCart">
         <div *ngFor="let cartItem of cartItems" class="cart-item flex flex-row p-5 [&:not(:first-child)]:border-t-2 [&:not(:first-child)]:border-t-gray-200">
-            <img class="rounded-3xl h-32 w-32" [src]="getImagePath(cartItem.products.image_url)" />
+            <img class="rounded-3xl h-24 w-24 lg:h-32 lg:w-32" [src]="getImagePath(cartItem.products.image_url)" />
             
             <div class="ml-5 flex flex-col justify-between">
                 <div class="text-xl font-bold ">
@@ -11,7 +11,7 @@
                     RM {{ cartItem.products.price | number:'1.2-2' }}
                 </div>
                 <div class="flex flex-row">
-                    <div class="z-10 w-8 border border-r-0 border-gray-200 bg-gray-50 justify-center items-center flex cursor-pointer">
+                    <div class="z-10 w-8 border border-r-0 border-gray-200 bg-gray-50 justify-center items-center flex cursor-pointer" (click)="modifyCartItemQuantity(cartItem.product_id, true)">
                         <icon key="minus" class="size-4" />
                     </div>
                     <input type="number" step="1"
@@ -19,9 +19,9 @@
                         [value]="cartItem.quantity"
                         [max]="cartItem.products.stocks[0].available_quantity"
                         (input)="restrictToNumbers($event)"
-                        (blur)="updateCart($event)"
+                        (blur)="preUpdateCart($event)"
                         class="z-20 p-1 w-24 text-center text-gray-900 border border-gray-200 bg-gray-50 text-base focus:ring-green-400 focus:border-green-400" />
-                    <div class="z-10 w-8 border border-l-0 border-gray-200 bg-gray-50 justify-center items-center flex cursor-pointer">
+                    <div class="z-10 w-8 border border-l-0 border-gray-200 bg-gray-50 justify-center items-center flex cursor-pointer" (click)="modifyCartItemQuantity(cartItem.product_id)">
                         <icon key="plus" class="size-4" />
                     </div>
                     <div class="pl-2 m-auto text-sm text-gray-400">
@@ -37,4 +37,16 @@
             </button>
         </div>
     </div>
+    <ng-template #emptyCart>
+        <div class="my-32 flex flex-col justify-center w-3/4 lg:w-full m-auto">
+            <div class="text-center text-base lg:text-xl mb-8">
+                Your cart is feeling a little lonely. Add some items to make it happy!
+            </div>
+            <button class="m-auto w-fit text-xl text-center text-white font-bold bg-black hover:text-green-400 transition-all duration-500 px-5 py-3 m-8"
+                type="button" routerLink="/products"
+            >
+                Shop Now
+            </button>
+        </div>
+    </ng-template>
 </div>

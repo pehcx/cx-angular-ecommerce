@@ -7,12 +7,14 @@ import { PreventParentScrollDirective } from "./directives/prevent-parent-scroll
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatMenuModule } from "@angular/material/menu";
 import { IconComponent } from "./components/icon/icon.component";
+import { ConfirmationDialogComponent } from "./components/dialogs/confirmation-dialog/confirmation-dialog.component";
 
 @NgModule({
   declarations: [
     IconComponent,
     ErrorDialogComponent,
     LoginDialogComponent,
+    ConfirmationDialogComponent,
     PreventParentScrollDirective,
   ],
   imports: [
@@ -24,6 +26,7 @@ import { IconComponent } from "./components/icon/icon.component";
     IconComponent,
     ErrorDialogComponent,
     LoginDialogComponent,
+    ConfirmationDialogComponent,
     PreventParentScrollDirective,
     MatMenuModule,
   ],
