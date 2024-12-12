@@ -1,1 +1,40 @@
-<p>cart works!</p>
+<div class="cart">
+    <div class="flex flex-col w-full lg:w-1/2 m-auto">
+        <div *ngFor="let cartItem of cartItems" class="cart-item flex flex-row p-5 [&:not(:first-child)]:border-t-2 [&:not(:first-child)]:border-t-gray-200">
+            <img class="rounded-3xl h-32 w-32" [src]="getImagePath(cartItem.products.image_url)" />
+            
+            <div class="ml-5 flex flex-col justify-between">
+                <div class="text-xl font-bold ">
+                    {{ cartItem.products.name }}
+                </div>
+                <div class="price">
+                    RM {{ cartItem.products.price | number:'1.2-2' }}
+                </div>
+                <div class="flex flex-row">
+                    <div class="z-10 w-8 border border-r-0 border-gray-200 bg-gray-50 justify-center items-center flex cursor-pointer">
+                        <icon key="minus" class="size-4" />
+                    </div>
+                    <input type="number" step="1"
+                        [id]="cartItem.product_id"
+                        [value]="cartItem.quantity"
+                        [max]="cartItem.products.stocks[0].available_quantity"
+                        (input)="restrictToNumbers($event)"
+                        (blur)="updateCart($event)"
+                        class="z-20 p-1 w-24 text-center text-gray-900 border border-gray-200 bg-gray-50 text-base focus:ring-green-400 focus:border-green-400" />
+                    <div class="z-10 w-8 border border-l-0 border-gray-200 bg-gray-50 justify-center items-center flex cursor-pointer">
+                        <icon key="plus" class="size-4" />
+                    </div>
+                    <div class="pl-2 m-auto text-sm text-gray-400">
+                        available: {{ cartItem.products.stocks[0].available_quantity }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="my-5 m-auto">
+            <button (click)="checkout()" class="text-white bg-black hover:text-green-400 font-bold text-base px-5 py-2.5 text-center cursor-pointer transition-all duration-500">
+                Checkout
+            </button>
+        </div>
+    </div>
+</div>

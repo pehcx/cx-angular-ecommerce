@@ -10,17 +10,17 @@ import { ProductCategory } from './product-category.model';
 })
 
 export class ProductsService {
-  constructor(private supabaseService: SupabaseService) {}
+  constructor(private supabase: SupabaseService) {}
 
   public getProducts(params: QueryParams = {}): Observable<Product[]> {
-    return from(this.supabaseService.fetchData('products', params));
+    return from(this.supabase.fetchData('products', params));
   }
 
   public getProductCategories(params: QueryParams = {}): Observable<ProductCategory[]> {
-    return from(this.supabaseService.fetchData('product_categories', params));
+    return from(this.supabase.fetchData('product_categories', params));
   }
 
   public addToCart(params: any): Observable<Product> {
-    return from(this.supabaseService.callFunction('add_to_cart', params));
+    return from(this.supabase.callFunction('add_to_cart', params));
   }
 }

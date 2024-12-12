@@ -1,4 +1,4 @@
-// Angular Material
+/* #region Angular Material */
 @use '@angular/material' as mat;
 @include mat.core();
 
@@ -15,7 +15,22 @@ $ecommerce-theme: mat.define-theme((
 
 :root {
   @include mat.all-component-themes($ecommerce-theme);
+
+  // Snack Bar
+  @include mat.snack-bar-overrides((
+    container-color: #000,
+    container-shape: 999px,
+    supporting-text-color: #FFF,
+    supporting-text-size: 1rem,
+  ));
 }
+
+// mat-checkbox
+.mdc-checkbox__background {
+  background-color: #000 !important;
+  border-color: #000 !important;
+}
+/* #endregion */
 
 // Own CSS Styling
 @import 'tailwindcss/base';
@@ -49,19 +64,12 @@ button:disabled {
   }
 }
 
-// The custom styling for Snack Bar
-:root {
-  @include mat.snack-bar-overrides((
-    container-color: #000,
-    container-shape: 999px,
-    supporting-text-color: #FFF,
-    supporting-text-size: 1rem,
-  ));
-}
-
-.mdc-checkbox__background {
-  background-color: #000 !important;
-  border-color: #000 !important;
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+  margin: 0;
 }
 
 /*******************************

@@ -8,8 +8,8 @@ interface ProductCategory {
 }
 
 interface Stock {
-    available_quantity?: number;
-    reserved_quantity?: number;
+    available_quantity: number;
+    reserved_quantity: number;
 }
 
 export class Product {

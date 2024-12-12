@@ -1,6 +1,7 @@
 import { Injectable, signal } from "@angular/core";
-import { from, tap } from "rxjs";
+import { from, Observable, tap } from "rxjs";
 import { SupabaseService } from "src/app/core/services/supabase.service";
+import { CartItem } from "./cart-item.model";
 
 @Injectable({
   providedIn: 'root'
@@ -19,11 +20,29 @@ export class CartService {
     };
     
     return from(this.supabase.fetchData('cart_items', params)).pipe(
-      tap((cartItems: any[]) => {
-        const totalItems = cartItems.reduce((sum, item) => sum + (item.sum || 0), 0);
+      tap((totalSum: any[]) => {
+        const totalItems = totalSum.reduce((sum, item) => sum + (item.sum || 0), 0);
         this.cartItemCount.set(totalItems);
       })
     );
+  }
+
+  public getCartItems(): Observable<CartItem[]> {
+    const params = {
+      cols: `
+        id,
+        product_id,
+        quantity,
+        products(name, image_url, price, stocks(available_quantity))
+      `,
+      orderBy: 'updated_at'
+    };
+
+    return from(this.supabase.fetchData('cart_items', params)).pipe();
+  }
+  
+  public updateCart(params: any) {
+    return from(this.supabase.callFunction('update_cart', params));
   }
 
   // Update the cart item count locally to avoid frequent GET calls
