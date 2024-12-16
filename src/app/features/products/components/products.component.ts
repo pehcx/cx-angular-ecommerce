@@ -62,12 +62,6 @@ export class ProductsComponent implements OnInit, OnDestroy {
     this.productsService.getProducts(params).pipe(
       map((products: any[]) => {
         const finalProducts = products;
-        // .map(product => ({
-        //   ...product,
-        //   product_categories: product.product_categories.map((pc: { categories: any; }) => pc.categories),
-        //   stocks: product.stocks?.[0]?.available_quantity ?? 0
-        // }));
-        
         const productCategories: ProductCategory[] = Array.from(
           new Map(finalProducts.flatMap(product => product.product_categories[0].categories).map((category: any) => [category.id, category])).values()
         );
