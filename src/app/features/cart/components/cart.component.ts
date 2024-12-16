@@ -65,7 +65,69 @@ export class CartComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateCart(input: HTMLInputElement) {
+  modifyCartItemQuantity(productId: any, decrement = false) {
+    const input = document.getElementById(`${productId}`) as HTMLInputElement;
+    
+    if (input) {
+      input.value = (decrement ? Number(input.value) - 1: Number(input.value) + 1).toString();
+      this.updateCart(input);
+    } else {
+      console.error('Bad input');
+      this.errorHandler.sendError('Something went wrong. Please reload the page.');
+    }
+  }
+
+  preRemove(productId: any) {
+    const dialogRef = this.confirmationDialog();
+
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        this.removeFromCart(productId);
+      }
+    });
+  }
+
+  subtotal(cartItem: CartItem) {
+    const input = document.getElementById(`${cartItem.product_id}`) as HTMLInputElement;
+
+    if (input) {
+      return cartItem.products.price * Number(input.value);
+    } else {
+      // Before input component generation
+      return cartItem.products.price * cartItem.quantity;
+    }
+  }
+
+  total(cartItems: CartItem[]) {
+    let total = 0;
+
+    cartItems.forEach(item => {
+      total += this.subtotal(item);
+    });
+
+    return total;
+  }
+
+  checkout() {
+    
+  }
+
+  restrictToNumbers(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const value = input.value;
+
+    const numericValue = value.replace(/[^0-9]/g, '');
+    if (value !== numericValue) {
+      input.value = numericValue;
+      event.preventDefault();
+    }
+  }
+
+  getImagePath(imageUrl: string) {
+    return environment.supabase_url + '/storage/v1/object/public/products/' + imageUrl;
+  }
+
+  private updateCart(input: HTMLInputElement) {
     const update = () => {
       const params = {
         input_product_id: input.id,
@@ -91,66 +153,63 @@ export class CartComponent implements OnInit, OnDestroy {
     };
 
     if (Number(input.value) <= 0) {
-      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-        data: {
-          title: 'Are you sure?',
-          message: 'Do you really want to remove this item from your cart?',
-          buttonText: 'Remove'
-        }
-      });
+      const dialogRef = this.confirmationDialog();
 
       dialogRef.afterClosed().subscribe((confirmed) => {
         if (confirmed) {
-          const params = {
-            input_product_id: input.id
-          };
-          this.cartService.removeFromCart(params).pipe(
-            takeUntil(this.destroy$)
-          ).subscribe({
-            next: () => {
-              this.cartItems = this.cartItems.filter(item => item.product_id !== Number(input.id));
-              this.snackBarService.show("Removed successfully.");
-            },
-            error: (error) => {
-              this.errorHandler.sendError(error);
-            }
-          });
+          this.removeFromCart(input.id);
         } else {
           input.value = '1';
           update();
         }
       });
     } else {
-      update();
+      const cartItem = this.cartItems.find((item) => item.product_id == Number(input.id));
+
+      if (cartItem) {
+        const available_qty = cartItem.products.stocks[0].available_quantity;
+
+        if (Number(input.value) > available_qty) {
+          this.errorHandler.sendError(`You cannot have more than the available stock of ${available_qty}.`);
+          input.value = available_qty.toString();
+        }
+
+        update();
+      }
     }
   }
 
-  modifyCartItemQuantity(productId: any, decrement = false) {
-    const input = document.getElementById(`${productId}`) as HTMLInputElement;
-    
-    if (input) {
-      input.value = (decrement ? Number(input.value) - 1: Number(input.value) + 1).toString();
-    }
+  private removeFromCart(productId: any) {
+    const params = {
+      input_product_id: productId
+    };
 
-    this.updateCart(input);
+    this.cartService.removeFromCart(params).pipe(
+      concatMap(() => this.cartService.getCartItemCount().pipe(
+        catchError((error) => {
+          this.errorHandler.sendError(error);
+          return of(null);
+        })
+      )),
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: () => {
+        this.cartItems = this.cartItems.filter(item => item.product_id !== Number(productId));
+        this.snackBarService.show("Removed successfully.");
+      },
+      error: (error) => {
+        this.errorHandler.sendError(error);
+      }
+    });
   }
 
-  checkout() {
-    
-  }
-
-  restrictToNumbers(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const value = input.value;
-
-    const numericValue = value.replace(/[^0-9]/g, '');
-    if (value !== numericValue) {
-      input.value = numericValue;
-      event.preventDefault();
-    }
-  }
-
-  getImagePath(imageUrl: string) {
-    return environment.supabase_url + '/storage/v1/object/public/products/' + imageUrl;
+  private confirmationDialog() {
+    return this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        title: 'Are you sure?',
+        message: 'Do you really want to remove this item from your cart?',
+        buttonText: 'Remove'
+      }
+    });
   }
 }
