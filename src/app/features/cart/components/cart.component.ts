@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CartService } from '../shared/cart.service';
-import { catchError, concatMap, of, Subject, takeUntil } from 'rxjs';
+import { catchError, concatMap, finalize, of, Subject, takeUntil } from 'rxjs';
 import { CartItem } from '../shared/cart-item.model';
 import { environment } from 'src/environments/environment';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
@@ -14,6 +14,8 @@ import { ConfirmationDialogComponent } from 'src/app/shared/components/dialogs/c
   styleUrls: ['./cart.component.scss']
 })
 export class CartComponent implements OnInit, OnDestroy {
+  isLoading = true;
+  failedLoading = false;
   cartItems: CartItem[] = [];
 
   private readonly destroy$ = new Subject<void>();
@@ -26,20 +28,31 @@ export class CartComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.loadCartItems();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  loadCartItems() {
+    this.isLoading = true;
+    this.failedLoading = false;
+
     this.cartService.getCartItems().pipe(
       takeUntil(this.destroy$),
+      finalize(() => {
+        this.isLoading = false;
+      }),
       catchError((error) => {
+        this.failedLoading = true;
         this.errorHandler.sendError(error);
         return of([]);
       })
     ).subscribe((cartItems) => {
       this.cartItems = cartItems;
     });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   preUpdateCart(event: Event) {
