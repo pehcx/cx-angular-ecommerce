@@ -49,7 +49,7 @@ export class CartService {
     return from(this.supabase.callFunction('remove_from_cart', params))
   }
 
-  // Update the cart item count locally to avoid frequent GET calls
+  // Used to update the cart item count locally to avoid frequent GET calls
   public updateCartItemCount(newValue = 1) {
     this.cartItemCount.update((currentValue) => {
       const updatedValue = currentValue + newValue;
