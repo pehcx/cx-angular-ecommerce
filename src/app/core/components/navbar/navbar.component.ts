@@ -8,6 +8,7 @@ import { LoginDialogComponent } from 'src/app/shared/components/dialogs/login-di
 import { ErrorHandlerService } from '../../services/error-handler.service';
 import { SnackBarService } from 'src/app/shared/services/snack-bar.service';
 import { CartService } from 'src/app/features/cart/shared/cart.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -67,6 +68,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   session: any;
 
   constructor(
+    private router: Router,
     private dialog: MatDialog,
     private errorHandler: ErrorHandlerService,
     private supabase: SupabaseService,
@@ -94,6 +96,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
           );
         } else if (authState === AuthState.SIGNED_OUT) {
             this.snackBarService.show("👋 Goodbye and have a nice day.");
+            this.router.navigate(['/']);
         }
 
         return of(null);
