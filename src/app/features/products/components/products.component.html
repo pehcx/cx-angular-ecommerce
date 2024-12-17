@@ -34,12 +34,21 @@
                         <div class="p-5">
                             <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ product.name }}</h5>
                             <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">RM {{ product.price | number:'1.2-2' }}/pc</p>
-                            <button
-                                (click)="addToCart(product)" [disabled]="addToCartIsLoading[product.id] || product.stocks[0].available_quantity <= 0"
-                                class="inline-flex items-center px-3 py-2 text-sm font-bold text-center text-white bg-black hover:text-green-400 transform transition-all duration-500"
-                            >
-                                Add To Cart
-                            </button>
+                            
+                            <div class="flex justify-between">
+                                <button
+                                    [routerLink]="'/products/' + product.id"
+                                    class="inline-flex items-center px-3 py-2 text-sm font-bold text-center text-white bg-black hover:text-green-400 transform transition-all duration-500"
+                                >
+                                    View Details
+                                </button>
+                                <button
+                                    (click)="addToCart(product)" [disabled]="addToCartIsLoading[product.id] || product.stocks[0].available_quantity <= 0"
+                                    class="inline-flex items-center px-3 py-2 text-sm font-bold text-center text-white bg-black hover:text-green-400 transform transition-all duration-500"
+                                >
+                                    Add To Cart
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </ng-container>

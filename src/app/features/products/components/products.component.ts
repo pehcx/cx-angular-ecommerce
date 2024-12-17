@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { catchError, finalize, map, of, Subject, takeUntil } from 'rxjs';
 import { Product } from '../shared/product.model';
-import { environment } from 'src/environments/environment';
 import { ProductsService } from '../shared/products.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { SupabaseService } from 'src/app/core/services/supabase.service';
@@ -10,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { LoginDialogComponent } from 'src/app/shared/components/dialogs/login-dialog/login-dialog.component';
 import { CartService } from '../../cart/shared/cart.service';
 import { ProductCategory } from '../shared/product-category.model';
+import { getImagePath } from 'src/app/core/helpers/common-helper';
 
 @Component({
   selector: 'app-products',
@@ -18,6 +18,8 @@ import { ProductCategory } from '../shared/product-category.model';
 })
 
 export class ProductsComponent implements OnInit, OnDestroy {
+  getImagePath = getImagePath;
+
   products: Product[] = [];
   filteredProducts: Product[] = [];
   productCategories: any = [];
@@ -93,10 +95,6 @@ export class ProductsComponent implements OnInit, OnDestroy {
         return acc;
       }, {});
     });
-  }
-
-  getImagePath(imageUrl: string) {
-    return environment.supabase_url + '/storage/v1/object/public/products/' + imageUrl;
   }
 
   addToCart(product: any) {

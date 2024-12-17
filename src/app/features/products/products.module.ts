@@ -4,6 +4,8 @@ import { ProductsComponent } from './components/products.component';
 import { ProductsRoutingModule } from './products-routing.module';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -13,7 +15,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
   imports: [
     CommonModule,
     ProductsRoutingModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    SharedModule,
+    FormsModule,
   ]
 })
 

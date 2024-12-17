@@ -2,11 +2,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CartService } from '../shared/cart.service';
 import { catchError, concatMap, finalize, of, Subject, takeUntil } from 'rxjs';
 import { CartItem } from '../shared/cart-item.model';
-import { environment } from 'src/environments/environment';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { SnackBarService } from 'src/app/shared/services/snack-bar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from 'src/app/shared/components/dialogs/confirmation-dialog/confirmation-dialog.component';
+import * as Helper from 'src/app/core/helpers/common-helper' ;
 
 @Component({
   selector: 'app-cart',
@@ -17,6 +17,9 @@ export class CartComponent implements OnInit, OnDestroy {
   isLoading = true;
   failedLoading = false;
   cartItems: CartItem[] = [];
+  getImagePath = Helper.getImagePath;
+  restrictToNumbers = Helper.restrictToNumbers;
+
 
   private readonly destroy$ = new Subject<void>();
 
@@ -123,21 +126,6 @@ export class CartComponent implements OnInit, OnDestroy {
 
   checkout() {
     
-  }
-
-  restrictToNumbers(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const value = input.value;
-
-    const numericValue = value.replace(/[^0-9]/g, '');
-    if (value !== numericValue) {
-      input.value = numericValue;
-      event.preventDefault();
-    }
-  }
-
-  getImagePath(imageUrl: string) {
-    return environment.supabase_url + '/storage/v1/object/public/products/' + imageUrl;
   }
 
   private updateCart(input: HTMLInputElement) {

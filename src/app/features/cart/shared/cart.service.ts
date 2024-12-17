@@ -14,9 +14,13 @@ export class CartService {
     private supabase: SupabaseService,
   ) { }
 
-  public getCartItemCount() {
+  public getCartItemCount(id: any = null) {
     const params = {
-      cols: `id, product_id, quantity.sum()`
+      cols: `id, product_id, quantity.sum()`,
+      eq: {
+        column: 'product_id',
+        value: id
+      }
     };
     
     return from(this.supabase.fetchData('cart_items', params)).pipe(

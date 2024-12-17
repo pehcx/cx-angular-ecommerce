@@ -115,6 +115,7 @@ export class SupabaseService {
           // Triggers:
           // 1. The user signs in
           // 2. Page reloads
+          // 3. User gets back to the tab
           this.session = session;
           this.authStateChanged.emit(AuthState.SIGNED_IN);
           break;
@@ -146,11 +147,17 @@ export class SupabaseService {
   /* #region Database & Queries */
   public async fetchData(table: string, queryParams: QueryParams = {}): Promise<any[]> {
     const queries = this.buildQueries(queryParams);
-    const { data, error } = await this.supabase
+    let sbQueries = this.supabase
       .from(table)
       .select(queries.cols)
       .order(queries.orderBy, { ascending: queries.sortByAsc })
       .limit(queries.limitBy);
+
+    if (queries.eq && queries.eq.column && queries.eq.value) {
+      sbQueries = sbQueries.eq(queries.eq.column, queries.eq.value);
+    }
+
+    const { data, error } = await sbQueries;
 
     if (error) throw error;
     return data ?? [];
