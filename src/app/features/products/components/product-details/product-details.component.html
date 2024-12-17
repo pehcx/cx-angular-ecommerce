@@ -1,10 +1,95 @@
-<ng-container *ngIf="true; else productNotFound">
-    <div class="product-details">
+<div class="min-h-[50vh] w-3/4 2xl:w-1/2 py-10 m-auto">
+    <ng-container *ngIf="!isLoading && product; else loading">
+        <div class="product-details flex flex-col md:flex-row justify-center 2xl:space-x-10">
+            <div class="border border-gray-200 rounded-lg">
+                <img class="object-cover rounded-lg h-64 w-full md:w-96 md:h-96" [src]="getImagePath(product.image_url)" />
+            </div>
 
-    </div>
-</ng-container>
-<ng-template #productNotFound>
-    <div class="not-found">
-        No product found...
-    </div>
-</ng-template>
+            <div class="mt-5 md:mt-0 md:ml-5 flex flex-col space-y-3 justify-between">
+                <div class="space-y-3">
+                    <div class="text-2xl font-bold">
+                        {{ product.name }}
+                    </div>
+                    <div class="text-base text-gray-700">
+                        {{ product.description }}
+                    </div>
+                </div>
+                
+                <div class="space-y-3">
+                    <div class="text-lg text-green-700 font-bold">
+                        RM {{ product.price | number:'1.2-2' }} /pc
+                    </div>
+    
+                    <div class="flex flex-row">
+                        <ng-container *ngIf="product.stocks[0].available_quantity > 0; else notAvailable">
+                            <button class="z-10 w-8 border border-r-0 border-gray-200 bg-gray-50 justify-center items-center flex cursor-pointer" (click)="modifyQuantity(true)"
+                                [disabled]="quantity <= 1">
+                                <icon key="minus" class="size-4" />
+                            </button>
+                            <input type="number" step="1"
+                                [id]="product.id"
+                                [(ngModel)]="quantity"
+                                (blur)="inputValidator($event)"
+                                class="z-20 p-1 w-12 text-center text-gray-900 border border-gray-200 bg-gray-50 text-base focus:ring-green-400 focus:border-green-400" />
+                            <button class="z-10 w-8 border border-l-0 border-gray-200 bg-gray-50 justify-center items-center flex cursor-pointer" (click)="modifyQuantity()"
+                                [disabled]="quantity >= (product.stocks[0].available_quantity)">
+                                <icon key="plus" class="size-4" />
+                            </button>
+                            <div class="pl-2 my-auto mr-auto text-sm text-gray-400">
+                                available: {{ product.stocks[0].available_quantity }}
+                            </div>
+                        </ng-container>
+                        <ng-template #notAvailable>
+                            <div class="text-gray-400 text-base">
+                                Sorry... This item is no longer available
+                            </div>
+                        </ng-template>
+                    </div>
+
+                    <div class="">
+                        <div *ngIf="((quantity + cartItemCount) > product.stocks[0].available_quantity)" class="text-red-500 text-sm mt-1">
+                            You already have the max available items in your cart!
+                        </div>
+                        <button
+                            (click)="addToCart()" [disabled]="product.stocks[0].available_quantity <= 0 || ((quantity + cartItemCount) > product.stocks[0].available_quantity)"
+                            class="m-auto w-1/2 md:w-48 px-3 py-2 text-sm font-bold text-center text-white bg-black hover:text-green-400 transform transition-all duration-500"
+                        >
+                            Add To Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    <ng-template #loading>
+        <div class="product-details flex flex-col md:flex-row justify-center 2xl:space-x-10">
+        <div class="border border-gray-200 rounded-lg">
+            <div class="bg-gray-200 animate-pulse object-cover rounded-lg h-64 w-full md:w-96 md:h-96"></div>
+        </div>
+
+        <div class="mt-5 md:mt-0 md:ml-5 flex flex-col space-y-3 justify-between">
+            <div class="space-y-3">
+            <div class="bg-gray-200 animate-pulse text-2xl h-8 w-3/4"></div>
+            <div class="bg-gray-200 animate-pulse text-base text-gray-700 h-6 w-full"></div>
+            </div>
+
+            <div class="space-y-3">
+            <div class="bg-gray-200 animate-pulse text-lg text-green-700 font-bold h-6 w-1/4"></div>
+
+            <div class="flex flex-row">
+
+                <div class="flex space-x-2">
+                    <div class="bg-gray-200 animate-pulse h-8 w-8"></div>
+                    <div class="bg-gray-200 animate-pulse h-8 w-16"></div>
+                    <div class="bg-gray-200 animate-pulse h-8 w-8"></div>
+                </div>
+            </div>
+
+            <div class="">
+                <div class="bg-gray-200 animate-pulse h-10 w-1/2 md:w-48"></div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </ng-template>
+</div>
