@@ -96,7 +96,9 @@ export class CartComponent implements OnInit, OnDestroy {
   preRemove(productId: any) {
     const dialogRef = this.confirmationDialog();
 
-    dialogRef.afterClosed().subscribe((confirmed) => {
+    dialogRef.afterClosed().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe((confirmed) => {
       if (confirmed) {
         this.removeFromCart(productId);
       }
@@ -156,7 +158,9 @@ export class CartComponent implements OnInit, OnDestroy {
     if (Number(input.value) <= 0) {
       const dialogRef = this.confirmationDialog();
 
-      dialogRef.afterClosed().subscribe((confirmed) => {
+      dialogRef.afterClosed().pipe(
+        takeUntil(this.destroy$)
+      ).subscribe((confirmed) => {
         if (confirmed) {
           this.removeFromCart(input.id);
         } else {

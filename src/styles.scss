@@ -64,6 +64,11 @@ button:disabled {
   }
 }
 
+input:disabled {
+  background-color: #9CA3AF !important;
+  cursor: not-allowed !important;
+}
+
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   appearance: none;
