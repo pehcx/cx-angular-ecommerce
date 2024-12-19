@@ -47,15 +47,15 @@
                     </div>
 
                     <div class="">
-                        <div *ngIf="((quantity + cartItemCount) > product.stocks[0].available_quantity)" class="text-red-500 text-sm mt-1">
-                            You already have the max available items in your cart!
-                        </div>
                         <button
                             (click)="addToCart()" [disabled]="product.stocks[0].available_quantity <= 0 || ((quantity + cartItemCount) > product.stocks[0].available_quantity)"
-                            class="m-auto w-1/2 md:w-48 px-3 py-2 text-sm font-bold text-center text-white bg-black hover:text-green-400 transform transition-all duration-500"
+                            class="rounded-lg m-auto w-1/2 md:w-48 px-3 py-2 text-sm font-bold text-center text-white bg-black hover:text-green-400 transform transition-all duration-500"
                         >
                             Add To Cart
                         </button>
+                        <div *ngIf="((quantity + cartItemCount) > product.stocks[0].available_quantity)" class="text-red-500 text-sm mt-1">
+                            You already have the max available items in your cart!
+                        </div>
                     </div>
                 </div>
             </div>

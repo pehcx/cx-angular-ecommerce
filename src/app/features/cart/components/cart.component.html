@@ -84,7 +84,7 @@
                     <div class="text-right text-base lg:text-lg">
                         Total: RM {{ total(cartItems) | number: '1.2-2' }}
                     </div>
-                    <button (click)="checkout()" class="mt-3 text-white bg-black hover:text-green-400 font-bold text-base px-5 py-2.5 text-center cursor-pointer transition-all duration-500">
+                    <button (click)="checkout()" class="rounded-lg mt-3 text-white bg-black hover:text-green-400 font-bold text-base px-5 py-2.5 text-center cursor-pointer transition-all duration-500">
                         Checkout
                     </button>
                 </div>
@@ -94,7 +94,7 @@
                     <div class="text-center text-base lg:text-xl mb-8">
                         Your cart is feeling a little lonely. Add some items to make it happy!
                     </div>
-                    <button class="m-auto w-fit text-xl text-center text-white font-bold bg-black hover:text-green-400 transition-all duration-500 px-5 py-3 m-8"
+                    <button class="rounded-lg m-auto w-fit text-xl text-center text-white font-bold bg-black hover:text-green-400 transition-all duration-500 px-5 py-3 m-8"
                         type="button" routerLink="/products"
                     >
                         Shop Now
@@ -107,7 +107,7 @@
         <div class="h-[300px] flex w-full">
             <button
             (click)="loadCartItems()" [disabled]="isLoading"
-            class="inline-flex items-center px-3 py-2 text-lg font-bold text-center text-white bg-black hover:text-green-400 transform transition-all duration-500 m-auto">
+            class="rounded-lg inline-flex items-center px-3 py-2 text-lg font-bold text-center text-white bg-black hover:text-green-400 transform transition-all duration-500 m-auto">
             Reload
         </button>
         </div>
