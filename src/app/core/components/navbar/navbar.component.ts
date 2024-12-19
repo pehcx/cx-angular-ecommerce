@@ -68,7 +68,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   session: any;
 
   constructor(
-    private router: Router,
     private dialog: MatDialog,
     private errorHandler: ErrorHandlerService,
     private supabase: SupabaseService,
@@ -96,7 +95,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
           );
         } else if (authState === AuthState.SIGNED_OUT) {
             this.snackBarService.show("👋 Goodbye and have a nice day.");
-            this.router.navigate(['/']);
         }
 
         return of(null);

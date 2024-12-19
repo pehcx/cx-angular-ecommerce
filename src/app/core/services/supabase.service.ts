@@ -3,6 +3,7 @@ import { createClient, Session, SupabaseClient } from '@supabase/supabase-js';
 import { environment } from 'src/environments/environment';
 import { AuthState } from '../enums/auth-state';
 import { QueryParams } from '../interfaces/query-params.interface';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,9 @@ export class SupabaseService {
   private session: Session | null = null;
   authStateChanged: EventEmitter<AuthState> = new EventEmitter<AuthState>();
 
-  constructor() {
+  constructor(
+    private router: Router,
+  ) {
     this.supabase = createClient(environment.supabase_url, environment.supabase_key, {
       auth: {
         // This is the default config
@@ -123,6 +126,7 @@ export class SupabaseService {
         case 'SIGNED_OUT':
           this.session = null;
           this.authStateChanged.emit(AuthState.SIGNED_OUT);
+          this.router.navigate(['/']);
           break;
 
         case 'TOKEN_REFRESHED':
