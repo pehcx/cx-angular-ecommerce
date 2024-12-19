@@ -22,7 +22,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   getImagePath = Helper.getImagePath;
   restrictToNumbers = Helper.restrictToNumbers;
   
-  private destroy$ = new Subject<void>();
+  private readonly destroy$ = new Subject<void>();
   product: Product;
   productId: number;
   cartItemCount: number;

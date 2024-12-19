@@ -8,7 +8,6 @@ import { LoginDialogComponent } from 'src/app/shared/components/dialogs/login-di
 import { ErrorHandlerService } from '../../services/error-handler.service';
 import { SnackBarService } from 'src/app/shared/services/snack-bar.service';
 import { CartService } from 'src/app/features/cart/shared/cart.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -61,7 +60,7 @@ import { Router } from '@angular/router';
 })
 
 export class NavbarComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
+  private readonly destroy$ = new Subject<void>();
   cartItemCount: any;
   drawerIsOpen = false;
   accountMenuIsOpen = false;
