@@ -21,8 +21,9 @@
 					<icon key="down" class="size-4 ml-1 stroke-2" />
 				</div>
 				<mat-menu #menu>
-					<button mat-menu-item routerLink="/profile">My Profile</button>
-					<button mat-menu-item routerLink="/order-history">Order History</button>
+					<button mat-menu-item routerLink="/account">Account Settings</button>
+					<button mat-menu-item routerLink="/account/profile">My Profile</button>
+					<button mat-menu-item routerLink="/account/order-history">Order History</button>
 					<button mat-menu-item (click)="onButtonClick('logout')">Logout</button>
 				</mat-menu>
 			</ng-container>
@@ -54,13 +55,14 @@
 	<a href="/aboutus" class="block p-2 w-fit">About Us</a>
 	<ng-container *ngIf="isLoggedIn(); else unauthenticatedMobile">
 		<div class="cursor-pointer flex flex-row items-center p-2" (click)="accountMenuIsOpen = !accountMenuIsOpen">
-			<span class="mr-2">Account</span>
+			<span class="mr-2">Hi, {{ session.user.user_metadata.full_name }}</span>
 			<icon key="down" class="size-4 stroke-2" />
 		</div>
 		<div class="account-menu text-zinc-300 bg-zinc-900 w-full" [@accountMenu]="accountMenuIsOpen ? 'isOpen': 'isClosed'">
 			<div class="my-2 space-y-3">
-				<a class="block p-2 w-fit m-auto" href="/profile">My Profile</a>
-				<a class="block p-2 w-fit m-auto" href="/order-history">Order History</a>
+				<a class="block p-2 w-fit m-auto" routerLinkActive="" href="/account">Account Settings</a>
+				<a class="block p-2 w-fit m-auto" href="/account/profile">My Profile</a>
+				<a class="block p-2 w-fit m-auto" href="/account/order-history">Order History</a>
 				<a (click)="onButtonClick('logout', true)" class="block p-2 w-fit m-auto font-bold cursor-pointer min-w-32 border-t border-zinc-300">Logout</a>
 			</div>
 		</div>

@@ -1,0 +1,13 @@
+<form [formGroup]="updateProfileForm" (ngSubmit)="onSubmit()">
+    <div class="mb-5">
+        <label for="fullName" class="block mb-2 text-lg font-bold">Full Name</label>
+        <input id="fullName" type="text" formControlName="fullName" placeholder="John Doe"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 min-w-72 lg:min-w-96" />
+    </div>
+
+    <button type="submit" [disabled]="updateProfileForm.invalid"
+        class="text-white bg-black hover:text-green-400 font-bold text-base w-full px-5 py-2.5 text-center cursor-pointer transition-all duration-500"
+    >
+        Update
+    </button>
+</form>

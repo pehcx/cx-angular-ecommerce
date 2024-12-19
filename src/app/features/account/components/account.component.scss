@@ -1,0 +1,23 @@
+button {
+    transition: color 500ms ease-in-out, border-color 0s !important;
+    
+    @media (max-width: 1023px) {
+        border-bottom: 5px solid rgba(0,0,0,0);
+    }
+
+    @media (min-width: 1024px) {
+        border-right: 5px solid rgba(0,0,0,0);
+    }
+
+    &.active {
+        background-color: #000;
+        
+        @media (max-width: 1023px) {
+            border-bottom: 5px solid #31C48D !important;
+        }
+        
+        @media (min-width: 1024px) {
+            border-right: 5px solid #31C48D !important;
+        }
+    }
+}

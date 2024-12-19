@@ -1,0 +1,20 @@
+<div class="account min-h-[50vh] m-auto lg:py-10 w-full lg:w-3/4 2xl:w-1/2 flex flex-col lg:flex-row">
+    <div class="tab-headers text-white bg-gray-700 lg:rounded-l flex flex-row lg:flex-col lg:w-48 ">
+        <button routerLink="/account" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+            class="font-bold p-2 lg:p-5 hover:text-green-400 flex-1 lg:flex-none text-center">
+            Account Settings
+        </button>
+        <button routerLink="/account/profile" routerLinkActive="active"
+            class="font-bold p-2 lg:p-5 hover:text-green-400 flex-1 lg:flex-none text-center">
+            My Profile
+        </button>
+        <button routerLink="/account/order-history" routerLinkActive="active"
+            class="font-bold p-2 lg:p-5 hover:text-green-400 flex-1 lg:flex-none text-center">
+            Order History
+        </button>
+    </div>
+
+    <div class="tab-content p-5 md:p-10 bg-gray-100 flex-1 lg:rounded-r">
+        <router-outlet></router-outlet>
+    </div>
+</div>
