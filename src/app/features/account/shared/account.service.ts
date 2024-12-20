@@ -12,4 +12,8 @@ export class AccountService {
   public deleteAccount() {
     return from(this.supabase.callFunction('delete_account'));
   }
+
+  public getUserAddresses() {
+    return from(this.supabase.fetchData('user_addresses'));
+  }
 }

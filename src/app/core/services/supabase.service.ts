@@ -137,6 +137,8 @@ export class SupabaseService {
           break;
 
         case 'USER_UPDATED':
+          this.session = session;
+          this.authStateChanged.emit(AuthState.USER_UPDATED);
           // this.supabase.auth.refreshSession();
           break;
 

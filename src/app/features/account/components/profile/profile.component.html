@@ -1,13 +1,56 @@
-<form [formGroup]="updateProfileForm" (ngSubmit)="onSubmit()">
-    <div class="mb-5">
-        <label for="fullName" class="block mb-2 text-lg font-bold">Full Name</label>
-        <input id="fullName" type="text" formControlName="fullName" placeholder="John Doe"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 min-w-72 lg:min-w-96" />
+<form [formGroup]="updateProfileForm" (ngSubmit)="onUpdateProfile()">
+    <div class="mb-10">
+        <label for="full_name" class="block mb-2 text-lg font-bold">Full Name</label>
+        <input id="full_name" type="text" formControlName="full_name" placeholder="John Doe"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5" />
+
+        <button type="submit" [disabled]="updateProfileForm.invalid || !updateProfileForm.dirty || isUpdating"
+            class="mt-5 rounded-lg text-white bg-black hover:text-green-400 font-bold text-base w-full px-5 py-2.5 text-center cursor-pointer transition-all duration-500"
+        >
+            Update
+        </button>
     </div>
 
-    <button type="submit" [disabled]="updateProfileForm.invalid"
-        class="rounded-lg text-white bg-black hover:text-green-400 font-bold text-base w-full px-5 py-2.5 text-center cursor-pointer transition-all duration-500"
-    >
-        Update
-    </button>
+    <div class="mb-10">
+        <div class="mb-5 text-lg font-bold">Addresses</div>
+
+        <ng-container *ngIf="!loadAddressesFailed; else retry">
+            <ng-container *ngIf="isLoadingAddresses; else addressList">
+                <div class="h-24 bg-gray-200 rounded my-1 p-2 animate-pulse" *ngFor="let _ of [].constructor(3)"></div>
+                
+                <div class="mt-5 h-10 bg-gray-300 rounded-lg w-full"></div>
+            </ng-container>
+            <ng-template #addressList>
+                <div class="bg-gray-300 rounded my-1 p-2 text-sm text-gray-700 relative" *ngFor="let address of addresses">
+                    <div>{{ address.full_name }}</div>
+                    <div>{{ address.line1 }}</div>
+                    <div>{{ address.line2 }}</div>
+                    <div>{{ address.postal_code + ', ' + address.city }}</div>
+                    <div class="text-black absolute bottom-2 right-2">
+                        <button (click)="onModifyAddress(address.id, 'edit')" class="font-bold hover:text-green-400 transition-all duration-500">Edit</button> |
+                        <button (click)="onModifyAddress(address.id, 'delete')" class="font-bold text-red-700 hover:text-red-400 transition-all duration-500">Delete</button>
+                    </div>
+                </div>
+        
+                <button (click)="addNewAddress()" [disabled]="addresses.length >= 3"
+                    class="mt-5 rounded-lg text-white bg-black hover:text-green-400 font-bold text-base w-full px-5 py-2.5 text-center cursor-pointer transition-all duration-500"
+                >
+                    Add A New Address
+                </button>
+                <div class="text-red-500 text-sm mt-1" *ngIf="addresses.length >= 3">
+                    You can only have 3 addresses at max.
+                </div>
+            </ng-template>
+        </ng-container>
+        <ng-template #retry>
+            <div class="h-[300px] flex w-full">
+                <button
+                    (click)="loadAddresses()" [disabled]="isLoadingAddresses"
+                    class="rounded-lg inline-flex items-center px-3 py-2 text-lg font-bold text-center text-white bg-black hover:text-green-400 transform transition-all duration-500 m-auto">
+                    Reload
+                </button>
+            </div>
+        </ng-template>
+        
+    </div>
 </form>

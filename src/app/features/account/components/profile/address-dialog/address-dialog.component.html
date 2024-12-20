@@ -1,0 +1,30 @@
+<div class="login-dialog p-5 lg:pl-10 lg:pr-10 lg:pb-10 lg:pt-7">
+    <div class="flex justify-end mb-5">
+      <icon key="close" class="size-8 cursor-pointer" (click)="closeDialog()" />
+    </div>
+
+    <form [formGroup]="addressForm" (ngSubmit)="onSubmit()">
+        <div class="address-dialog flex flex-col">
+            <label class="block mb-2 text-lg font-bold">Recipient's Full Name</label>
+            <input id="full_name" type="text" formControlName="full_name" placeholder="John Doe"
+                class="mb-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5" />
+            <label class="block mb-2 text-lg font-bold">Address</label>
+            <input id="line1" type="text" formControlName="line1" placeholder="Line 1"
+                class="mb-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5" />
+            <input id="line2" type="text" formControlName="line2" placeholder="Line 2"
+                class="mb-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5" />
+            <div class="flex flex-row space-x-3">
+                <input id="postalCode" type="text" formControlName="postalCode" placeholder="Postal Code"
+                    class="mb-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block flex-1 p-2.5" />
+                <input id="city" type="text" formControlName="city" placeholder="City"
+                    class="mb-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block flex-1 p-2.5" />
+            </div>
+        
+            <button type="submit" [disabled]="addressForm.invalid"
+                class="mt-5 rounded-lg text-white bg-black hover:text-green-400 font-bold text-base w-full px-5 py-2.5 text-center cursor-pointer transition-all duration-500"
+            >
+                Add
+            </button>
+        </div>
+    </form>
+</div>
