@@ -8,6 +8,7 @@ import { LoginDialogComponent } from 'src/app/shared/components/dialogs/login-di
 import { ErrorHandlerService } from '../../services/error-handler.service';
 import { SnackBarService } from 'src/app/shared/services/snack-bar.service';
 import { CartService } from 'src/app/features/cart/shared/cart.service';
+import { GuardService } from '../../services/guard.service';
 
 @Component({
   selector: 'app-navbar',
@@ -72,6 +73,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private supabase: SupabaseService,
     private snackBarService: SnackBarService,
     private cartService: CartService,
+    private guardService: GuardService,
   ) {
     effect(() => {
       this.cartItemCount = this.cartService.cartItemCount();
@@ -122,9 +124,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.dialog.open(LoginDialogComponent);
     } else if (button === 'logout') {
       try {
+        this.guardService.setBypassGuard(true);
         await this.supabase.signOut();
       } catch (error) {
         if (error) this.errorHandler.sendError(error);
+
+        this.guardService.setBypassGuard(false);
       }
     } else if (button === 'profile') {
 

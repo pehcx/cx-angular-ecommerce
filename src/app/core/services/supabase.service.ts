@@ -31,7 +31,7 @@ export class SupabaseService {
   /* #region Authentication */
   public async signUp(form: {
     email: string,
-    fullName: string,
+    full_name: string,
     password: string,
   }) {
     try {
@@ -40,7 +40,7 @@ export class SupabaseService {
         password: form.password,
         options: {
           data: {
-            full_name: form.fullName
+            full_name: form.full_name
           }
         }
       });
@@ -69,7 +69,7 @@ export class SupabaseService {
         password: form.password
       });
   
-      if (error) throw error
+      if (error) throw error;
 
       return {
         data: data,
@@ -93,23 +93,25 @@ export class SupabaseService {
     return this.session;
   }
 
-  // public async retrieveSession() {
-  //   try {
-  //     const { data, error } = await this.supabase.auth.getSession();
+  public async updateUserData(params: any) {
+    try {
+      const { data, error } = await this.supabase.auth.updateUser({
+        data: params
+      });
 
-  //     if (error) throw error;
+      if (error) throw error;
       
-  //     return {
-  //       data: data,
-  //       error: null
-  //     };
-  //   } catch (error) {
-  //     return {
-  //       data: null,
-  //       error: error
-  //     };
-  //   }
-  // }
+      return {
+        data: data,
+        error: null
+      };
+    } catch (error) {
+      return {
+        data: null,
+        error: error
+      }
+    }
+  }
 
   private authStateChangeHandler() {
     this.supabase.auth.onAuthStateChange(async (event, session) => {
