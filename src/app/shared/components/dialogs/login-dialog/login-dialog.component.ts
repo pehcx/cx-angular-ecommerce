@@ -28,7 +28,7 @@ export class LoginDialogComponent {
   ) {
     this.signUpForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      fullName: ['', [Validators.required, Validators.minLength(3)]],
+      full_name: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
 

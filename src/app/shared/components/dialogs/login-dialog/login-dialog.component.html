@@ -37,10 +37,10 @@
             </div>
         </div>
         <div class="mb-5">
-            <label for="fullName" class="block mb-2 text-lg font-bold">Full Name</label>
-            <input id="fullName" type="text" formControlName="fullName" placeholder="John Doe"
+            <label for="full_name" class="block mb-2 text-lg font-bold">Full Name</label>
+            <input id="full_name" type="text" formControlName="full_name" placeholder="John Doe"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 min-w-72 lg:min-w-96" />
-            <div *ngIf="signUpForm.get('fullName')?.invalid && signUpForm.get('fullName')?.touched" class="text-red-500 text-sm mt-1">
+            <div *ngIf="signUpForm.get('full_name')?.invalid && signUpForm.get('full_name')?.touched" class="text-red-500 text-sm mt-1">
                 Full Name is required (min 3 characters).
             </div>
         </div>
