@@ -85,7 +85,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$),
       switchMap((authState: AuthState) => {
         this.session = this.supabase.getSession();
-  
+        
         if (authState === AuthState.SIGNED_IN || authState === AuthState.TOKEN_REFRESHED) {
           // Get the latest cart item count upon signing in
           return this.cartService.getCartItemCount().pipe(

@@ -38,12 +38,12 @@ export class LoginDialogComponent {
     });
   }
 
-  async onSubmit() {
+  onSubmit() {
     this.isLoading = true;
 
     // Close the Login/Signup modal only when the attempt is successful
     if (this.page === 'login' && this.loginForm.valid) {
-      await this.supabase.signIn(this.loginForm.value).then(({ data, error }) => {
+      this.supabase.signIn(this.loginForm.value).then(({ data, error }) => {
         if (error) {
           this.errorHandler.sendError(error);
         }
@@ -52,9 +52,11 @@ export class LoginDialogComponent {
           this.closeDialog();
           this.snackBarService.show(`🍇🍉 Welcome back, ${data.user.user_metadata['full_name']}! 🍒🍌`);
         }
+      }).catch(exception => {
+        this.errorHandler.sendError(exception);
       });
     } else if (this.page === 'signup' && this.signUpForm.valid) {
-      await this.supabase.signUp(this.signUpForm.value).then(({ data, error }) => {
+      this.supabase.signUp(this.signUpForm.value).then(({ data, error }) => {
         if (error) {
           this.errorHandler.sendError(error);
         }
@@ -63,6 +65,8 @@ export class LoginDialogComponent {
           this.closeDialog();
           this.snackBarService.show("🎉 Signed up successfully!");
         }
+      }).catch(exception => {
+        this.errorHandler.sendError(exception);
       });
     } else {
       this.errorHandler.sendError('Invalid form submission');
