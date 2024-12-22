@@ -179,6 +179,27 @@ export class SupabaseService {
     if (error) throw error;
     return data ?? [];
   }
+
+  public async insertData(table: string, obj: any) {
+    const { data, error } = await this.supabase.from(table).insert(obj).select();
+
+    if (error) throw error;
+    return data;
+  }
+
+  public async updateData(table: string, obj: any) {
+    const { data, error } = await this.supabase.from(table).update(obj).eq('id', obj.id).select();
+
+    if (error) throw error;
+    return data;
+  }
+
+  public async deleteData(table: string, obj: any) {
+    const { data, error } = await this.supabase.from(table).delete(obj).eq('id', obj.id).select();
+
+    if (error) throw error;
+    return data;
+  }
   /* #endregion */
 
   /* #region Helpers */
