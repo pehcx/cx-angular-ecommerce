@@ -3,12 +3,13 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { HasUnsavedChanges } from 'src/app/core/guards/unsaved-changes.guard';
 import { SupabaseService } from 'src/app/core/services/supabase.service';
 import { AccountService } from '../../shared/account.service';
-import { catchError, of, Subject, takeUntil } from 'rxjs';
+import { catchError, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { Address } from '../../shared/address.model';
 import { MatDialog } from '@angular/material/dialog';
 import { AddressDialogComponent } from './address-dialog/address-dialog.component';
 import { SnackBarService } from 'src/app/shared/services/snack-bar.service';
+import { ConfirmationDialogComponent } from 'src/app/shared/components/dialogs/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-profile',
@@ -77,27 +78,14 @@ export class ProfileComponent implements OnInit, OnDestroy, HasUnsavedChanges {
     ).subscribe((addresses) => {
       this.isLoadingAddresses = false;
       this.addresses = addresses;
-      this.addresses = [{
-        id: 1,
-        full_name: 'Hello',
-        line1: 'test',
-        line2: 'test2',
-        postal_code: '3000',
-        city: 'city'
-      },{
-        id: 2,
-        full_name: 'Hello',
-        line1: 'test',
-        line2: 'test2',
-        postal_code: '3000',
-        city: 'city'
-      }];
     });
   }
 
   addNewAddress() {
     if (this.addresses.length < 3) {
-      const dialogRef = this.dialog.open(AddressDialogComponent);
+    const dialogRef = this.dialog.open(AddressDialogComponent, { data: {
+      mode: 'new'
+    }});
 
       dialogRef.afterClosed().pipe(
         takeUntil(this.destroy$)
@@ -108,8 +96,49 @@ export class ProfileComponent implements OnInit, OnDestroy, HasUnsavedChanges {
   }
 
   onModifyAddress(id: any, mode: 'edit' | 'delete') {
-    if (mode == 'edit') {
+    const address = this.addresses.find(add => add.id === id);
+    
+    if (!address) {
+      this.errorHandler.sendError('Something went wrong!');
+      return;
+    }
 
+    if (mode == 'edit') {
+      const dialogRef = this.dialog.open(AddressDialogComponent, { data: {
+        address: address,
+        mode: mode
+      }});
+
+      dialogRef.afterClosed().pipe(
+        takeUntil(this.destroy$)
+      ).subscribe(() => {
+        this.loadAddresses();
+      });
+    } else {
+      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        data: {
+          title: 'Are you sure?',
+          message: 'Do you really want to delete this address?',
+          buttonText: 'Delete'
+        }
+      });
+
+      dialogRef.afterClosed().pipe(
+        takeUntil(this.destroy$),
+        switchMap((confirmed) => {
+          if (confirmed) {
+            return this.accountService.deleteAddress(address).pipe(
+              tap(() => {
+                this.snackBarService.show('Deleted successfully.');
+                this.loadAddresses();
+              })
+            );
+          } else {
+            this.loadAddresses();
+            return [];
+          }
+        })
+      ).subscribe();
     }
   }
   
@@ -125,7 +154,7 @@ export class ProfileComponent implements OnInit, OnDestroy, HasUnsavedChanges {
       }
 
       if (data) {
-        this.snackBarService.show('Updated successfully!');
+        this.snackBarService.show('Profile has been updated successfully!');
         this.updateProfileForm.markAsPristine();
       }
     }).catch(exception => {
