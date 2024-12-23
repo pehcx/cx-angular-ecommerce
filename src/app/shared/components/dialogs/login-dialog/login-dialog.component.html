@@ -41,7 +41,15 @@
             <input id="full_name" type="text" formControlName="full_name" placeholder="John Doe"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 min-w-72 lg:min-w-96" />
             <div *ngIf="signUpForm.get('full_name')?.invalid && signUpForm.get('full_name')?.touched" class="text-red-500 text-sm mt-1">
-                Full Name is required (min 3 characters).
+                <div *ngIf="signUpForm.get('full_name')?.hasError('required')">
+                    Full Name is required.
+                </div>
+                <div *ngIf="signUpForm.get('full_name')?.hasError('minlength')">
+                    Full Name must be at least 4 characters long.
+                </div>
+                <div *ngIf="signUpForm.get('full_name')?.hasError('maxlength')">
+                    Full Name cannot exceed 255 characters.
+                </div>
             </div>
         </div>
         <div class="mb-5">
@@ -49,7 +57,15 @@
             <input id="password" type="password" formControlName="password" 
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 min-w-72 lg:min-w-96" />
             <div *ngIf="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched" class="text-red-500 text-sm mt-1">
-                Password is required (min 6 characters).
+                <div *ngIf="signUpForm.get('password')?.hasError('required')">
+                    Password is required.
+                </div>
+                <div *ngIf="signUpForm.get('password')?.hasError('minlength')">
+                    Password must be at least 6 characters long.
+                </div>
+                <div *ngIf="signUpForm.get('password')?.hasError('maxlength')">
+                    Password cannot exceed 30 characters.
+                </div>
             </div>
         </div>
         <button type="submit" [disabled]="isLoading || signUpForm.invalid"

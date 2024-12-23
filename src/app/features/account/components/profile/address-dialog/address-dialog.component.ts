@@ -29,11 +29,11 @@ export class AddressDialogComponent implements OnInit, OnDestroy {
     private snackBarService: SnackBarService,
   ) {
     this.addressForm = this.fb.group({
-      full_name: ['', [Validators.required, Validators.minLength(1)]],
-      line_1: ['', [Validators.required, Validators.minLength(1)]],
-      line_2: ['', [Validators.required, Validators.minLength(1)]],
-      postal_code: ['', [Validators.required, Validators.minLength(1)]],
-      city: ['', [Validators.required, Validators.minLength(1)]]
+      full_name: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(255)]],
+      line_1: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(255)]],
+      line_2: ['', [Validators.minLength(1), Validators.maxLength(255)]],
+      postal_code: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(5)]],
+      city: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(255)]]
     });
   }
 

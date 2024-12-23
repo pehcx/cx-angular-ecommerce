@@ -28,13 +28,13 @@ export class LoginDialogComponent {
   ) {
     this.signUpForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      full_name: ['', [Validators.required, Validators.minLength(3)]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      full_name: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(255)]],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]],
     });
 
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]],
     });
   }
 

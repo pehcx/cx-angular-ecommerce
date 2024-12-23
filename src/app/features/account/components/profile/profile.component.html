@@ -3,6 +3,17 @@
         <label for="full_name" class="block mb-2 text-lg font-bold">Full Name</label>
         <input id="full_name" type="text" formControlName="full_name" placeholder="John Doe"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5" />
+        <div *ngIf="updateProfileForm.get('full_name')?.invalid && updateProfileForm.get('full_name')?.touched" class="text-red-500 text-sm mt-1">
+            <div *ngIf="updateProfileForm.get('full_name')?.hasError('required')">
+                Full Name is required.
+            </div>
+            <div *ngIf="updateProfileForm.get('full_name')?.hasError('minlength')">
+                Full Name must be at least 4 characters long.
+            </div>
+            <div *ngIf="updateProfileForm.get('full_name')?.hasError('maxlength')">
+                Full Name cannot exceed 255 characters.
+            </div>
+        </div>
 
         <button type="submit" [disabled]="updateProfileForm.invalid || !updateProfileForm.dirty || isUpdating"
             class="mt-5 rounded-lg text-white bg-black hover:text-green-400 font-bold text-base w-full px-5 py-2.5 text-center cursor-pointer transition-all duration-500"

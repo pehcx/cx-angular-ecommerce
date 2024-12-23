@@ -38,7 +38,7 @@ export class ProfileComponent implements OnInit, OnDestroy, HasUnsavedChanges {
     private snackBarService: SnackBarService,
   ) {
     this.updateProfileForm = this.fb.group({
-      full_name: ['', [Validators.required, Validators.minLength(1)]]
+      full_name: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(255)]]
     });
   }
 
