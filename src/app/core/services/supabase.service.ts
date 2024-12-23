@@ -115,6 +115,7 @@ export class SupabaseService {
 
   private authStateChangeHandler() {
     this.supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log(event);
       switch (event) {
         case 'SIGNED_IN':
           // Triggers:
@@ -139,7 +140,16 @@ export class SupabaseService {
         case 'USER_UPDATED':
           this.session = session;
           this.authStateChanged.emit(AuthState.USER_UPDATED);
-          // this.supabase.auth.refreshSession();
+          break;
+
+        case 'INITIAL_SESSION':
+          try {
+            this.supabase.auth.refreshSession();
+          } catch (error) {
+            console.error(error);
+            localStorage.clear();
+            this.router.navigate(['/']);
+          }
           break;
 
         default:
