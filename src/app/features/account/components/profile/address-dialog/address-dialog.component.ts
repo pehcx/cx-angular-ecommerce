@@ -70,7 +70,12 @@ export class AddressDialogComponent implements OnInit, OnDestroy {
         }
       });
     } else {
-      this.accountService.updateAddress(this.addressForm.value).pipe(
+      const params = {
+        id: this.data.address?.id,
+        ...this.addressForm.value
+      }
+      
+      this.accountService.updateAddress(params).pipe(
         takeUntil(this.destroy$)
       ).subscribe({
         next: () => {
