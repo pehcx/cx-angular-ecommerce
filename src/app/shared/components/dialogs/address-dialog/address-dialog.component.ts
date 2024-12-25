@@ -1,9 +1,9 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { AccountService } from '../../../shared/account.service';
+import { AccountService } from '../../../../features/account/shared/account.service';
 import { Subject, takeUntil } from 'rxjs';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
-import { Address } from '../../../shared/address.model';
+import { Address } from '../../../../features/account/shared/address.model';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SnackBarService } from 'src/app/shared/services/snack-bar.service';
 

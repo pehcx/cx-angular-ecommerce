@@ -7,7 +7,7 @@ import { catchError, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { Address } from '../../shared/address.model';
 import { MatDialog } from '@angular/material/dialog';
-import { AddressDialogComponent } from './address-dialog/address-dialog.component';
+import { AddressDialogComponent } from '../../../../shared/components/dialogs/address-dialog/address-dialog.component';
 import { SnackBarService } from 'src/app/shared/services/snack-bar.service';
 import { ConfirmationDialogComponent } from 'src/app/shared/components/dialogs/confirmation-dialog/confirmation-dialog.component';
 

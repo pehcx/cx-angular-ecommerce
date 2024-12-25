@@ -8,6 +8,7 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/mater
 import { MatMenuModule } from "@angular/material/menu";
 import { IconComponent } from "./components/icon/icon.component";
 import { ConfirmationDialogComponent } from "./components/dialogs/confirmation-dialog/confirmation-dialog.component";
+import { AddressDialogComponent } from "./components/dialogs/address-dialog/address-dialog.component";
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { ConfirmationDialogComponent } from "./components/dialogs/confirmation-d
     ErrorDialogComponent,
     LoginDialogComponent,
     ConfirmationDialogComponent,
+    AddressDialogComponent,
     PreventParentScrollDirective,
   ],
   imports: [
@@ -27,6 +29,7 @@ import { ConfirmationDialogComponent } from "./components/dialogs/confirmation-d
     ErrorDialogComponent,
     LoginDialogComponent,
     ConfirmationDialogComponent,
+    AddressDialogComponent,
     PreventParentScrollDirective,
     MatMenuModule,
   ],
