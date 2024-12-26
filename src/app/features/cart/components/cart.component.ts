@@ -7,6 +7,7 @@ import { SnackBarService } from 'src/app/shared/services/snack-bar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from 'src/app/shared/components/dialogs/confirmation-dialog/confirmation-dialog.component';
 import * as Helper from 'src/app/core/helpers/common-helper' ;
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -20,7 +21,6 @@ export class CartComponent implements OnInit, OnDestroy {
   getImagePath = Helper.getImagePath;
   restrictToNumbers = Helper.restrictToNumbers;
 
-
   private readonly destroy$ = new Subject<void>();
 
   constructor(
@@ -28,6 +28,7 @@ export class CartComponent implements OnInit, OnDestroy {
     private errorHandler: ErrorHandlerService,
     private snackBarService: SnackBarService,
     private dialog: MatDialog,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -128,6 +129,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
   checkout() {
     
+    this.router.navigate(['/checkout'], { state: { checkout: true } })
   }
 
   private updateCart(input: HTMLInputElement) {

@@ -1,0 +1,84 @@
+<form [formGroup]="checkoutForm" class="mx-auto mb-5">
+    <div class="font-bold text-red-700 text-lg text-center animate-pulse my-5 select-none">
+        Payment Simulation Page
+    </div>
+    <div class="flex flex-col md:flex-row p-5 w-full md:w-2/3 m-auto space-y-10 md:space-y-0 md:space-x-10">
+        <div class="flex-1">
+            <app-address-list [selectable]="true" (selection)="onAddressSelection($event)" />
+        </div>
+        <div class="flex-1">
+            <div class="mb-5">
+                <label for="card_holder_name" class="block mb-2 text-lg font-bold">Card Holder Name</label>
+                <input id="card_holder_name" type="text" formControlName="card_holder_name" placeholder="John Doe" maxlength="255"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5" />
+                <div *ngIf="checkoutForm.get('card_holder_name')?.invalid && checkoutForm.get('card_holder_name')?.touched" class="text-red-500 text-sm mt-1">
+                    <div *ngIf="checkoutForm.get('card_holder_name')?.hasError('required')">
+                        Card Holder Name is required.
+                    </div>
+                    <div *ngIf="checkoutForm.get('card_holder_name')?.hasError('minlength')">
+                        Card Holder Name must be at least 4 characters long.
+                    </div>
+                    <div *ngIf="checkoutForm.get('card_holder_name')?.hasError('maxlength')">
+                        Card Holder Name cannot exceed 255 characters.
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-5">
+                <label for="card_number" class="block mb-2 text-lg font-bold">Card Number</label>
+                <input id="card_number" type="text" maxlength="19" formControlName="card_number" placeholder="1234 1234 1234 1234" cardNumberFormatter
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5" />
+                <div *ngIf="checkoutForm.get('card_number')?.invalid && checkoutForm.get('card_number')?.touched" class="text-red-500 text-sm mt-1">
+                    <div *ngIf="checkoutForm.get('card_number')?.hasError('required')">
+                        Card Number is required.
+                    </div>
+                    <div *ngIf="checkoutForm.get('card_number')?.hasError('minlength') || checkoutForm.get('card_number')?.hasError('maxlength')">
+                        Card Number must be exactly 16 characters.
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-5 flex flex-row space-x-5">
+                <div class="flex-1">
+                    <label for="cvv" class="block mb-2 text-lg font-bold">CVV</label>
+                    <input id="cvv" type="text" formControlName="cvv" placeholder="777" maxlength="3"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5" />
+                    <div *ngIf="checkoutForm.get('cvv')?.invalid && checkoutForm.get('cvv')?.touched" class="text-red-500 text-sm mt-1">
+                        <div *ngIf="checkoutForm.get('cvv')?.hasError('required')">
+                            CVV is required.
+                        </div>
+                        <div *ngIf="checkoutForm.get('cvv')?.hasError('pattern')">
+                            CVV must be exactly 3 digits.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-1">
+                    <label for="expiry_date" class="block mb-2 text-lg font-bold">Expiry Date</label>
+                    <input id="expiry_date" type="text" formControlName="expiry_date" placeholder="12/27" maxlength="5" expiryDateFormatter
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5" />
+                    <div *ngIf="checkoutForm.get('expiry_date')?.invalid && checkoutForm.get('expiry_date')?.touched" class="text-red-500 text-sm mt-1">
+                        <div *ngIf="checkoutForm.get('expiry_date')?.hasError('required')">
+                            Expiry Date is required.
+                        </div>
+                        <div *ngIf="checkoutForm.get('expiry_date')?.hasError('invalidFormat')">
+                            Expiry Date should use format: MM/YY, eg. 12/27
+                        </div>
+                        <div *ngIf="checkoutForm.get('expiry_date')?.hasError('expired')">
+                            This card has expired. Please enter a valid expiry date.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="font-bold text-lg text-right border-t border-gray-300 py-3">
+                Total: RM {{ total() | number:'1.2-2' }}
+            </div>
+            <button [disabled]="checkoutForm.invalid" (click)="makePayment()"
+                class="mt-2 rounded-lg text-white bg-black hover:text-green-400 font-bold text-base w-full px-5 py-2.5 text-center cursor-pointer transition-all duration-500" 
+            >
+                Pay
+            </button>
+        </div>
+    </div>
+</form>
