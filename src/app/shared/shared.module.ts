@@ -9,6 +9,7 @@ import { MatMenuModule } from "@angular/material/menu";
 import { IconComponent } from "./components/icon/icon.component";
 import { ConfirmationDialogComponent } from "./components/dialogs/confirmation-dialog/confirmation-dialog.component";
 import { AddressDialogComponent } from "./components/dialogs/address-dialog/address-dialog.component";
+import { AddressListComponent } from "./components/address-list/address-list.component";
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { AddressDialogComponent } from "./components/dialogs/address-dialog/addr
     ErrorDialogComponent,
     LoginDialogComponent,
     ConfirmationDialogComponent,
+    AddressListComponent,
     AddressDialogComponent,
     PreventParentScrollDirective,
   ],
@@ -29,6 +31,7 @@ import { AddressDialogComponent } from "./components/dialogs/address-dialog/addr
     ErrorDialogComponent,
     LoginDialogComponent,
     ConfirmationDialogComponent,
+    AddressListComponent,
     AddressDialogComponent,
     PreventParentScrollDirective,
     MatMenuModule,

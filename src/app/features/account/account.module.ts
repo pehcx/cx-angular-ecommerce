@@ -8,7 +8,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AccountSettingsComponent } from './components/account-settings/account-settings.component';
 import { OrderHistoryComponent } from './components/order-history/order-history.component';
-import { AddressDialogComponent } from './components/profile/address-dialog/address-dialog.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
@@ -17,7 +16,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
     AccountSettingsComponent,
     ProfileComponent,
     OrderHistoryComponent,
-    AddressDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -27,9 +25,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
     ReactiveFormsModule,
     SharedModule,
   ],
-  exports: [
-    AddressDialogComponent,
-  ]
 })
 
 export class AccountModule {}
