@@ -1,4 +1,7 @@
-<div class="mb-2 text-lg font-bold">Addresses</div>
+<div class="mb-2 text-lg font-bold">
+    <span *ngIf="!selectable">Addresses</span>
+    <span *ngIf="selectable">Pick A Delivery Address</span>
+</div>
 
 <ng-container *ngIf="!loadAddressesFailed; else retry">
     <ng-container *ngIf="isLoadingAddresses; else addressList">
@@ -21,8 +24,8 @@
             </div>
 
             <ng-template #selectableList>
-                <div class="bg-gray-300 text-gray-700 rounded my-1 p-2 text-sm relative cursor-pointer" (click)="onAddressSelect(address.id)"
-                    [ngClass]="{ '!bg-black !text-white': (address.id === selectedUserAddressId) }"
+                <div class="address bg-gray-300 text-gray-700 rounded my-1 p-2 text-sm relative cursor-pointer" (click)="onAddressSelect(address.id)"
+                    [ngClass]="{ 'selected !bg-black !text-white': (address.id === selectedUserAddressId) }"
                 >
                     <div>{{ address.full_name }}</div>
                     <div>{{ address.line_1 }}</div>

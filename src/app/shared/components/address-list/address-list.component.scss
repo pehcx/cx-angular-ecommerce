@@ -1,0 +1,7 @@
+.address {
+    border-right: 5px solid rgba(0,0,0,0);
+
+    &.selected {
+        border-right: 5px solid #31C48D !important;
+    }
+}

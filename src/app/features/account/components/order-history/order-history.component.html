@@ -1,1 +1,37 @@
-<p>order-history works!</p>
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <table class="w-full text-sm text-center text-black">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+            <tr>
+                <th scope="col" class="px-6 py-3 text-center">
+                    Order ID
+                </th>
+                <th scope="col" class="px-6 py-3 text-center">
+                    Status
+                </th>
+                <th scope="col" class="px-6 py-3 text-center">
+                    Total
+                </th>
+                <th scope="col" class="px-6 py-3 text-center">
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="odd:bg-white even:bg-slate-50 border-b" *ngFor="let order of orders">
+                <td scope="row" class="px-6 py-4 text-center font-medium text-gray-900 whitespace-nowrap">
+                    {{ order.id }}
+                </td>
+                <td scope="row" class="px-6 py-4 text-center">
+                    <span class="text-gray-700" *ngIf="order.status === 1">Processing</span>
+                    <span class="text-green-400" *ngIf="order.status === 2">Delivered</span>
+                </td>
+                <td scope="row" class="px-6 py-4 text-center">
+                    RM {{ order.total | number:'1.2-2' }}
+                </td>
+                <td scope="row" class="px-6 py-4 text-center">
+                    <button (click)="viewOrderDetails(order)" class="font-bold hover:text-green-400 transition-all duration-500"><icon key="order" class="size-6" /></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

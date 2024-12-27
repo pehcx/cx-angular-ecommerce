@@ -103,7 +103,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe({
       next: () => {
-        this.router.navigate(['/account/profile']);
+        this.router.navigate(['/account/order-history']);
+        this.cartService.updateCartItemCount(0);
         this.snackBarService.show("Your purchase was successful. We will process your order within 24 hours.");
       },
       error: (error) => {

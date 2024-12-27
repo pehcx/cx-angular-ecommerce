@@ -12,6 +12,7 @@ import { AddressDialogComponent } from "./components/dialogs/address-dialog/addr
 import { AddressListComponent } from "./components/address-list/address-list.component";
 import { CardNumberFormatterDirective } from "./directives/card-number-formatter.directive";
 import { ExpiryDateFormatterDirective } from "./directives/expiry-date-formatter.directive";
+import { OrderDetailsDialogComponent } from "./components/dialogs/order-details-dialog/order-details-dialog.component";
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { ExpiryDateFormatterDirective } from "./directives/expiry-date-formatter
     ConfirmationDialogComponent,
     AddressListComponent,
     AddressDialogComponent,
+    OrderDetailsDialogComponent,
     PreventParentScrollDirective,
     CardNumberFormatterDirective,
     ExpiryDateFormatterDirective,
@@ -37,6 +39,7 @@ import { ExpiryDateFormatterDirective } from "./directives/expiry-date-formatter
     ConfirmationDialogComponent,
     AddressListComponent,
     AddressDialogComponent,
+    OrderDetailsDialogComponent,
     PreventParentScrollDirective,
     MatMenuModule,
     CardNumberFormatterDirective,

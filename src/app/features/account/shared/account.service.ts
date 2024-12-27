@@ -29,4 +29,8 @@ export class AccountService {
   public deleteAddress(obj: Address) {
     return from(this.supabase.deleteData('user_addresses', obj));
   }
+
+  public getOrders(params: any) {
+    return from(this.supabase.fetchData('orders', params));
+  }
 }
