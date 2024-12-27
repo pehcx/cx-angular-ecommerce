@@ -6,7 +6,7 @@
     <form [formGroup]="addressForm" (ngSubmit)="onSubmit()">
         <div class="address-dialog flex flex-col">
             <label class="block mb-2 text-lg font-bold">Recipient's Full Name</label>
-            <input id="full_name" type="text" formControlName="full_name" placeholder="John Doe"
+            <input id="full_name" type="text" formControlName="full_name" placeholder="John Doe" maxlength="255"
                 class="mb-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5" />
             <div *ngIf="addressForm.get('full_name')?.invalid && addressForm.get('full_name')?.touched" class="text-red-500 text-sm mt-1">
                 <div *ngIf="addressForm.get('full_name')?.hasError('required')">
@@ -21,22 +21,22 @@
             </div>
 
             <label class="block mb-2 text-lg font-bold">Address</label>
-            <input id="line_1" type="text" formControlName="line_1" placeholder="Line 1"
+            <input id="line_1" type="text" formControlName="line_1" placeholder="Line 1" maxlength="255"
                 class="mb-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5" />
             <div *ngIf="addressForm.get('line_1')?.invalid && addressForm.get('line_1')?.touched" class="text-red-500 text-sm mt-1">
                 Line 1 is required (max 255 characters).
             </div>
 
-            <input id="line_2" type="text" formControlName="line_2" placeholder="Line 2"
+            <input id="line_2" type="text" formControlName="line_2" placeholder="Line 2" maxlength="255"
                 class="mb-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5" />
             <div *ngIf="addressForm.get('line_2')?.invalid && addressForm.get('line_2')?.touched" class="text-red-500 text-sm mt-1">
                 Line 2 can only have 255 characters at max.
             </div>
 
             <div class="flex flex-row space-x-3">
-                <input id="postal_code" type="text" formControlName="postal_code" placeholder="Postal Code"
+                <input id="postal_code" type="text" formControlName="postal_code" placeholder="Postal Code" maxlength="5"
                     class="mb-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block flex-1 p-2.5" />
-                <input id="city" type="text" formControlName="city" placeholder="City"
+                <input id="city" type="text" formControlName="city" placeholder="City" maxlength="255"
                     class="mb-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block flex-1 p-2.5" />
             </div>
 
