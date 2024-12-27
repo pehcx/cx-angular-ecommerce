@@ -2,15 +2,16 @@
 https://lokal-bonanza-private.vercel.app/
 
 ### Introduction
-LokalBonanza is a demo project showcasing a responsive platform where consumers can purchase high-quality, locally-sourced fruits and vegetables, delivered directly to their door.
+LokalBonanza is a demo project showcasing a responsive platform where consumers can purchase high-quality, locally-sourced fruits and vegetables, delivered directly to their door. Feel free to explore the project at the provided URL.
 
 ### Main Tech Stack
 - Frontend: Angular, Tailwind CSS
 - Backend: Supabase
 - Deployment: Vercel
 
-### Project Access & Data Reset Schedule
-Feel free to explore the project at the provided URL. Please note that the data will be reset daily at 08:00 AM (GMT+8).
+> [!CAUTION]
+> Please note that the data will be reset daily at 08:00 AM (GMT+8).
+
 
 | Screenshots |
 | :-----: |
